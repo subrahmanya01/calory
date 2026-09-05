@@ -1,0 +1,12 @@
+<header class="header flex items-center justify-between py-5">
+	<a class="brand inline-flex items-center gap-2 no-underline" routerLink="/home"><span class="brand-dot"></span>calory</a>
+	<nav class="flex items-center gap-5 text-sm" aria-label="Main navigation">
+		@if (signedIn) {
+			<a routerLink="/home">Today</a>
+			<button type="button" class="text-button border-0 bg-transparent px-0" (click)="logout()">Sign out</button>
+		} @else {
+			<a routerLink="/login">Sign in</a>
+			<a class="nav-cta rounded px-4 py-2 no-underline" routerLink="/register">Join free</a>
+		}
+	</nav>
+</header>

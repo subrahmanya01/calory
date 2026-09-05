@@ -1,0 +1,18 @@
+.footer {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.5rem 0;
+    color: #748078;
+    border-top: 1px solid #dfe5d6;
+    font-size: .72rem;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+}
+
+@media (max-width: 600px) {
+    .footer {
+        flex-direction: column;
+        gap: .5rem;
+    }
+}

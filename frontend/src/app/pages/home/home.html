@@ -1,0 +1,25 @@
+<div class="home-page mx-auto min-h-screen w-[calc(100%-2rem)] max-w-6xl">
+	<app-header />
+	@if (loading()) {
+		<main class="loading-state"><app-spinner /> <span>Opening your day...</span></main>
+	} @else if (user(); as current) {
+		<main>
+			<section class="welcome-row">
+				<div><p class="eyebrow">Sunday, September 06</p><h1>Good morning, <em>{{ current.firstName }}</em>.</h1><p class="lede">A little awareness goes a long way. Here is your calm starting point.</p></div>
+				<div class="day-stamp"><span>DAY</span><strong>01</strong><small>of your rhythm</small></div>
+			</section>
+			<section class="dashboard-grid grid gap-4 lg:grid-cols-[1.15fr_.85fr]">
+				<article class="calorie-card rounded-lg p-7"><div class="card-top flex justify-between"><span>Daily energy</span><span class="status-dot">On track</span></div><div class="calorie-number">—<small> kcal logged</small></div><div class="meter"><span></span></div><p class="card-note">Your meals will appear here as you add them.</p><button class="dark-button" type="button" disabled>Log a meal <span>+</span></button></article>
+				<article class="prompt-card rounded-lg p-7"><span class="card-index">01 / TODAY'S NOTE</span><h2>What would feel good to eat today?</h2><p>Start with curiosity, not rules. Your first entry sets the tone.</p><button class="arrow-button" type="button" disabled>Coming soon <span>↗</span></button></article>
+				<article class="profile-card rounded-lg border border-[#dce4d3] p-7 lg:col-span-2"><div class="card-top flex justify-between"><span>Your profile</span><button class="edit-button" type="button" (click)="editing.set(!editing())">{{ editing() ? 'Close' : 'Edit' }}</button></div><div class="profile-avatar">{{ current.firstName.charAt(0) }}{{ current.lastName.charAt(0) }}</div><h2>{{ current.firstName }} {{ current.lastName }}</h2><p>{{ current.email }}</p>
+					  @if (editing()) { <form [formGroup]="form" (ngSubmit)="save()"><label>First name<input formControlName="firstName" /></label><label>Last name<input formControlName="lastName" /></label><label>Email<input formControlName="email" type="email" /></label><label>New password <input formControlName="password" type="password" placeholder="Leave blank to keep it" /></label><button class="dark-button" type="submit" [disabled]="saving()">@if (saving()) { <app-spinner /> } @else { Save changes }</button></form> }
+					@if (!editing()) { <button class="delete-link" type="button" (click)="removeAccount()">Deactivate account</button> }
+				</article>
+			</section>
+			@if (message()) { <p class="inline-message">{{ message() }}</p> }
+		</main>
+	} @else {
+		<main class="landing"><p class="eyebrow">A calmer way to eat</p><h1>Make your daily<br /><em>energy visible.</em></h1><p class="lede">Simple tracking for the choices that make you feel like yourself.</p><a class="dark-button landing-button" routerLink="/register">Get started <span>↗</span></a></main>
+	}
+	<app-footer />
+</div>

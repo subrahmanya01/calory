@@ -1,0 +1,26 @@
+<div class="auth-page register-page mx-auto min-h-screen w-[calc(100%-2rem)] max-w-6xl">
+	<app-header />
+	<main class="auth-layout grid items-center gap-12 py-12 lg:grid-cols-2 lg:gap-24">
+		<section class="auth-intro">
+			<p class="eyebrow">Start with one day</p>
+			<h1>Your energy,<br /><em>your rhythm.</em></h1>
+			<p class="lede">A simple place to understand your intake, shape a goal, and keep moving.</p>
+			<div class="principles"><span>01 / Notice</span><span>02 / Adjust</span><span>03 / Repeat</span></div>
+		</section>
+		<section class="auth-card rounded-lg border border-[#dfe5d6] bg-[#fffdf7]/85 p-8 shadow-xl shadow-[#4e654b]/10 sm:p-12">
+			<p class="eyebrow mb-4">Make it yours</p>
+			<h2 class="font-serif text-4xl font-normal tracking-[-.05em]">Create your account.</h2>
+			<p class="muted my-3 mb-8 text-[#849087]">Your personal dashboard starts here.</p>
+			@if (error()) { <p class="form-error" role="alert">{{ error() }}</p> }
+			<form class="grid gap-4" [formGroup]="form" (ngSubmit)="submit()">
+				<div class="two-up grid gap-4 sm:grid-cols-2"><label class="grid gap-2 text-xs font-bold text-[#516158]">First name <input class="rounded border border-[#d8dfcf] bg-[#f8f9f0] p-3 outline-none" formControlName="firstName" autocomplete="given-name" /></label><label class="grid gap-2 text-xs font-bold text-[#516158]">Last name <input class="rounded border border-[#d8dfcf] bg-[#f8f9f0] p-3 outline-none" formControlName="lastName" autocomplete="family-name" /></label></div>
+				<label class="grid gap-2 text-xs font-bold text-[#516158]">Email <input class="rounded border border-[#d8dfcf] bg-[#f8f9f0] p-3 outline-none" type="email" formControlName="email" autocomplete="email" placeholder="you@example.com" /></label>
+				<label class="grid gap-2 text-xs font-bold text-[#516158]">Password <input class="rounded border border-[#d8dfcf] bg-[#f8f9f0] p-3 outline-none" type="password" formControlName="password" autocomplete="new-password" placeholder="At least 8 characters" /></label>
+				@if (form.controls.password.touched && form.controls.password.invalid) { <small>Password must be at least 8 characters.</small> }
+				<button class="primary-button mt-2 flex min-h-12 items-center justify-center gap-3 rounded bg-[#27352f] text-sm font-bold text-[#fdfdf5]" type="submit" [disabled]="submitting()">@if (submitting()) { <app-spinner /> } @else { Create account <span>↗</span> }</button>
+			</form>
+			<p class="switch-copy">Already have an account? <a routerLink="/login">Sign in</a></p>
+		</section>
+	</main>
+	<app-footer />
+</div>

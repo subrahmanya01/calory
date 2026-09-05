@@ -1,0 +1,57 @@
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.4rem 0;
+}
+
+.brand {
+    display: inline-flex;
+    align-items: center;
+    gap: .55rem;
+    color: #27352f;
+    font: 700 1.45rem Georgia, serif;
+    letter-spacing: -.04em;
+    text-decoration: none;
+}
+
+.brand-dot {
+    width: .7rem;
+    height: .7rem;
+    background: #c8e650;
+    border-radius: 50%;
+    box-shadow: 4px 4px 0 #f39e6b;
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    font-size: .85rem;
+    font-weight: 650;
+}
+
+nav a {
+    color: #4c5d53;
+    text-decoration: none;
+}
+
+nav a:hover {
+    color: #27352f;
+}
+
+.text-button {
+    padding: 0;
+    color: #4c5d53;
+    background: none;
+    border: 0;
+    font: inherit;
+    cursor: pointer;
+}
+
+.nav-cta {
+    padding: .65rem .95rem;
+    color: #27352f;
+    background: #d8f06d;
+    border-radius: 5px;
+}
