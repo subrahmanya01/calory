@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "JlgDbUTeDY8=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\subgb\\source\\TypefaceIndia\\calory\\backend\\Calory\\Calory.Api\\Calory.Api.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\subgb\\.nuget\\packages\\microsoft.aspnetcore.openapi\\10.0.11\\microsoft.aspnetcore.openapi.10.0.11.nupkg.sha512",
+    "C:\\Users\\subgb\\.nuget\\packages\\microsoft.openapi\\2.7.5\\microsoft.openapi.2.7.5.nupkg.sha512"
+  ],
+  "logs": []
+}
