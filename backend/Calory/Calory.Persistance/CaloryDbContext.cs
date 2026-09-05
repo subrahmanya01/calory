@@ -6,6 +6,7 @@ namespace Calory.Persistance;
 public sealed class CaloryDbContext(DbContextOptions<CaloryDbContext> options) : DbContext(options)
 {
     public DbSet<User> Users => Set<User>();
+    public DbSet<HealthGoal> HealthGoals => Set<HealthGoal>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -17,6 +18,17 @@ public sealed class CaloryDbContext(DbContextOptions<CaloryDbContext> options) :
             entity.Property(user => user.FirstName).HasMaxLength(100).IsRequired();
             entity.Property(user => user.LastName).HasMaxLength(100).IsRequired();
             entity.Property(user => user.PasswordHash).IsRequired();
+        });
+
+        modelBuilder.Entity<HealthGoal>(entity =>
+        {
+            entity.HasKey(goal => goal.Id);
+            entity.HasIndex(goal => new { goal.UserId, goal.IsActive });
+            entity.Property(goal => goal.DailyCalorieTarget).HasPrecision(10, 2).IsRequired();
+            entity.Property(goal => goal.ProteinTarget).HasPrecision(10, 2).IsRequired();
+            entity.Property(goal => goal.CarbTarget).HasPrecision(10, 2).IsRequired();
+            entity.Property(goal => goal.FatTarget).HasPrecision(10, 2).IsRequired();
+            entity.Property(goal => goal.WeightTarget).HasPrecision(10, 2).IsRequired();
         });
     }
 }
