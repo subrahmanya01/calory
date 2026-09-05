@@ -1,5 +1,6 @@
 <Solution>
   <Project Path="Calory.Api/Calory.Api.csproj" />
   <Project Path="Calory.Domain/Calory.Domain.csproj" Id="c0f79696-a404-4195-aac1-f5bdbaaf7a10" />
+  <Project Path="Calory.ImageToCalory.Api/Calory.ImageToCalory.Api.csproj" Id="b3181e25-e016-460a-9826-5c012faff9c7" />
   <Project Path="Calory.Persistance/Calory.Persistance.csproj" Id="101b659d-4a7c-4f79-a0bb-65ddba69843e" />
 </Solution>
