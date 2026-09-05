@@ -1,7 +1,7 @@
 using Calory.Api.Features.Users;
 using Calory.Api.Infrastructure;
 using Calory.Domain;
-using Calory.Persistance.Repository;
+using Calory.Persistance.Interfaces;
 using FastEndpoints;
 using Microsoft.AspNetCore.Identity;
 

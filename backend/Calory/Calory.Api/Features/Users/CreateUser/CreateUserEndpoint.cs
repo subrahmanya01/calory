@@ -1,5 +1,5 @@
 ﻿using Calory.Domain;
-using Calory.Persistance.Repository;
+using Calory.Persistance.Interfaces;
 using FastEndpoints;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;

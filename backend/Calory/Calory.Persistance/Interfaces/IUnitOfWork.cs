@@ -1,4 +1,4 @@
-namespace Calory.Persistance.Repository;
+namespace Calory.Persistance.Interfaces;
 
 public interface IUnitOfWork
 {

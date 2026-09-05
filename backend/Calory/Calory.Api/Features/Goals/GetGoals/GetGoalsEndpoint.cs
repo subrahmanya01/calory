@@ -1,5 +1,5 @@
 using System.Security.Claims;
-using Calory.Persistance.Repository;
+using Calory.Persistance.Interfaces;
 using FastEndpoints;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 
