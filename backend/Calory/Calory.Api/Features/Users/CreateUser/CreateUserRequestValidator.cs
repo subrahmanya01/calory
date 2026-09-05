@@ -18,7 +18,7 @@ namespace Calory.Api.Features.Users.CreateUser
                 .WithMessage("Last name is required and must be at most 100 characters long.");
 
             RuleFor(x => x.Email)
-                .NotEmpty().NotNull()
+                .NotEmpty()
                 .EmailAddress()
                 .WithMessage("Email is required and must be a valid email address.");
             RuleFor(x => x.Password)

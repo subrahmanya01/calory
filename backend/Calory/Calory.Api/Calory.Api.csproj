@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
@@ -7,10 +7,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.11" />
     <PackageReference Include="FastEndpoints" Version="8.3.0" />
     <PackageReference Include="FastEndpoints.Generator" Version="8.3.0" />
     <PackageReference Include="FastEndpoints.Security" Version="8.3.0" />
     <PackageReference Include="FastEndpoints.Swagger" Version="8.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Calory.Domain\Calory.Domain.csproj" />
+    <ProjectReference Include="..\Calory.Persistance\Calory.Persistance.csproj" />
   </ItemGroup>
 
 </Project>

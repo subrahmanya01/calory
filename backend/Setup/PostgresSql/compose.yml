@@ -1,0 +1,32 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: calory-postgres
+
+    environment:
+      POSTGRES_USER: calory_user
+      POSTGRES_PASSWORD: calory_password
+      POSTGRES_DB: calory_db
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+    restart: unless-stopped
+
+  adminer:
+    image: adminer:latest
+    container_name: calory-adminer
+
+    ports:
+      - "8080:8080"
+
+    depends_on:
+      - postgres
+
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
