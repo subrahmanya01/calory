@@ -12,6 +12,8 @@ using Calory.Persistance;
 using Calory.Api.Options;
 using Microsoft.AspNetCore.Http.Json;
 using Calory.Api.Services;
+using System.Diagnostics;
+using System.Threading.RateLimiting;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -67,6 +69,21 @@ builder.Services
     });
 builder.Services.AddAuthorization();
 
+builder.Services.AddRateLimiter(options =>
+{
+    options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+    options.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, string>(httpContext =>
+        RateLimitPartition.GetFixedWindowLimiter(
+            httpContext.Connection.RemoteIpAddress?.ToString() ?? "unknown",
+            _ => new FixedWindowRateLimiterOptions
+            {
+                PermitLimit = 100,
+                Window = TimeSpan.FromMinutes(1),
+                QueueLimit = 0,
+                AutoReplenishment = true
+            }));
+});
+
 
 builder.Services.AddCors(options =>
 {
@@ -79,6 +96,27 @@ builder.Services.AddCors(options =>
 });
 
 var app = builder.Build();
+
+app.Use(async (httpContext, next) =>
+{
+    var logger = httpContext.RequestServices.GetRequiredService<ILogger<Program>>();
+    var stopwatch = Stopwatch.StartNew();
+
+    try
+    {
+        await next();
+    }
+    finally
+    {
+        stopwatch.Stop();
+        logger.LogInformation(
+            "HTTP {Method} {Path} responded {StatusCode} in {ElapsedMilliseconds} ms",
+            httpContext.Request.Method,
+            httpContext.Request.Path,
+            httpContext.Response.StatusCode,
+            stopwatch.ElapsedMilliseconds);
+    }
+});
 
 app.MapMcp("/mcp").RequireAuthorization();
 
@@ -96,6 +134,7 @@ app.UseCors("AllowAll");
 
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseRateLimiter();
 app.UseFastEndpoints();
 
 app.Run();
