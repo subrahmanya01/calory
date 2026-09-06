@@ -186,3 +186,13 @@ dotnet build .\backend\Calory\Calory.Ai.Orchestrator\Calory.Ai.Orchestrator.cspr
 - PDF imports accept files up to 10 MB and report skipped rows instead of silently importing invalid data.
 - Do not commit Azure OpenAI, Gemini, database, or production JWT secrets.
 - Use HTTPS and a strong environment-specific JWT signing key outside local development.
+
+> Note: <br>
+> This is a simple application demonstrating these functionalities.
+
+TODO:
+1. Add unit tests.
+2. Add automatic nutrient calculation and suggestions using a nutrient database.
+3. Consider using models specifically trained for food visual analysis, such as Food-R1 or CaLoRAify, instead of general-purpose models.
+4. Add an OAuth provider, such as Google or Microsoft, or add email verification.
+5. Move AI visual analysis into a separate service to improve scalability.
