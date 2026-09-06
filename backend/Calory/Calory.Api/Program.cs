@@ -18,7 +18,15 @@ if (string.IsNullOrWhiteSpace(jwtSettings.Key) || Encoding.UTF8.GetByteCount(jwt
     throw new InvalidOperationException("Jwt:Key must be at least 32 bytes long.");
 }
 
-builder.Services .AddFastEndpoints() .SwaggerDocument();
+builder.Services
+    .AddFastEndpoints()
+    .SwaggerDocument(o =>
+    {
+        o.EnableJWTBearerAuth = true;
+    });
+
+
+
 builder.Services.AddPersistence(builder.Configuration);
 builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection(JwtOptions.SectionName));
 builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
@@ -41,6 +49,7 @@ builder.Services
         };
     });
 builder.Services.AddAuthorization();
+
 
 builder.Services.AddCors(options =>
 {

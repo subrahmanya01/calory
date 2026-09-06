@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace Calory.Api.Features.FoodEntries;
 
-public class FoodEntryRequestValidator : Validator<FoodEntryRequest>
+public sealed class FoodEntryRequestValidator : Validator<FoodEntryRequest>
 {
     public FoodEntryRequestValidator()
     {

@@ -1,4 +1,5 @@
 using Calory.Domain;
+using Calory.Domain.Enums;
 
 namespace Calory.Api.Features.FoodEntries;
 

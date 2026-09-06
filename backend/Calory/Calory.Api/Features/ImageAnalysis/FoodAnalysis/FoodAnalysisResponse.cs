@@ -1,21 +1,15 @@
-using Calory.Domain;
-using Calory.Domain.Enums;
+﻿namespace Calory.Api.Features.ImageAnalysis.FoodAnalysis;
 
-namespace Calory.Api.Features.FoodEntries;
-
-public class FoodEntryRequest
+public sealed class FoodAnalysisResponse
 {
-    public MealType MealType { get; set; }
+    public string MealType { get; set; } = string.Empty;
     public string FoodName { get; set; } = string.Empty;
     public decimal Quantity { get; set; }
     public string Unit { get; set; } = string.Empty;
-    public DateTime ConsumedAt { get; set; }
-    public FoodEntrySource Source { get; set; } = FoodEntrySource.Manual;
-    public string? Notes { get; set; }
-    public FoodNutritionRequest Nutrition { get; set; } = new();
+    public FoodNutritionResponse Nutrition { get; set; } = new();
 }
 
-public sealed class FoodNutritionRequest
+public sealed class FoodNutritionResponse
 {
     public decimal Calories { get; set; }
     public decimal ProteinG { get; set; }

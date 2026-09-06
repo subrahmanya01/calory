@@ -1,6 +1,0 @@
-@Calory.ImageToCalory.Api_HostAddress = http://localhost:5287
-
-GET {{Calory.ImageToCalory.Api_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
