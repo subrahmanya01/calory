@@ -1,13 +1,12 @@
-using System.ComponentModel;
-using System.Security.Claims;
-using System.Text.Json;
 using Calory.Api.Features.Goals;
 using Calory.Api.Features.Goals.SetGoal;
 using Calory.Api.Features.Goals.UpdateGoal;
 using Calory.Domain;
 using Calory.Persistance.Interfaces;
-using Microsoft.AspNetCore.Http;
 using ModelContextProtocol.Server;
+using System.ComponentModel;
+using System.Security.Claims;
+using System.Text.Json;
 
 namespace Calory.Api.Mcp;
 

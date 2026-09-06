@@ -1,7 +1,11 @@
-# Calory
+<h1 align="center">
+  <img src="./docs/images/calory.png" alt="Calory" width="27" height="27" />
+  Calory
+</h1>
 
 Calory is a full-stack nutrition tracking application. It helps users record meals, manage time-bound health goals, understand calorie and nutrient consumption, and interact with their nutrition data through an AI assistant.
 
+![High Level Block Diagram](./docs/images/login.png)
 ## What It Does
 
 - Create, edit, delete, and search food entries.
@@ -21,24 +25,15 @@ Calory is a full-stack nutrition tracking application. It helps users record mea
 
 ## Architecture
 
-```text
-frontend/                     Angular web application
-backend/Calory/Calory.Api     REST API, authentication, reports, PDF import, MCP server
-backend/Calory/Calory.Domain  Domain entities and enums
-backend/Calory/Calory.Persistance
-                              EF Core DbContext, repositories, migrations
-backend/Calory/Calory.Ai.Orchestrator
-                              Streaming AI chat service and MCP client
-backend/Setup/PostgresSql      PostgreSQL and Adminer Docker setup
-docs/                         Requirements, setup, API, and database notes
-```
+![High Level Block Diagram](./docs/images/high_level_diagram.png)
+
 
 The application uses:
 
 - Angular 21 for the frontend.
 - ASP.NET Core and FastEndpoints for the API.
 - Entity Framework Core 10 with PostgreSQL.
-- JWT bearer authentication shared by the API and AI orchestrator.
+- JWT bearer authentication shared by the API and Chat Service.
 - Azure OpenAI for the chat assistant.
 - Google Gemini for food image analysis.
 - Model Context Protocol for authenticated nutrition tools.
@@ -50,7 +45,7 @@ The application uses:
 
 - .NET 10 SDK
 - Node.js and npm
-- Docker Desktop
+- Docker Desktop or WSL
 - PostgreSQL, supplied through Docker Compose
 - Azure OpenAI credentials for chat
 - Gemini API credentials for image analysis
@@ -60,7 +55,7 @@ The application uses:
 From the repository root:
 
 ```powershell
-docker compose -f .\backend\Setup\PostgresSql\compose.yml up -d
+docker compose -f .\backend\Setup\compose.yml up -d
 ```
 
 PostgreSQL is available on port `5432`. Adminer is available at `http://localhost:8080`.
@@ -73,18 +68,44 @@ backend/Calory/Calory.Persistance/Migrations
 
 ### Start the API
 
+Configure keys in the `appsettings.json` before running the api
+```json
+ "Jwt": {
+   "Issuer": "Calory.Api",
+   "Audience": "Calory.Client",
+   "Key": "development-only-change-this-jwt-key-to-a-long-random-secret",
+   "ExpirationMinutes": 60
+ },
+ "Gemini": {
+   "Model": "gemini-2.5-flash",
+   "ApiKey": "<YOUR_GEMINI_API_KEY>"
+ },
+```
 ```powershell
 dotnet run --project .\backend\Calory\Calory.Api\Calory.Api.csproj
 ```
 
 The API reads its PostgreSQL and JWT settings from `appsettings.json` and environment-specific configuration. Swagger is enabled in Development.
 
-### Start the AI orchestrator
+### Start the Chat Service
 
-Configure Azure OpenAI and the MCP endpoint in the orchestrator configuration, then run:
+Configure Azure OpenAI and the MCP endpoint in the Chat Service configuration, 
+```json
+ "Mcp": {
+   "Endpoint": "http://localhost:5290/mcp"
+ },
+ "Jwt": {
+   "Issuer": "Calory.Api",
+   "Audience": "Calory.Client",
+   "Key": "development-only-change-this-jwt-key-to-a-long-random-secret",
+   "ExpirationMinutes": 60
+ }
+```
+use same configuration used in `api` for jwt config
+then run:
 
 ```powershell
-dotnet run --project .\backend\Calory\Calory.Ai.Orchestrator\Calory.Ai.Orchestrator.csproj
+dotnet run --project .\backend\Calory\Calory.ChatService\Calory.Ai.Orchestrator.csproj
 ```
 
 The orchestrator accepts authenticated chat requests at:
@@ -104,6 +125,8 @@ npm start
 Pop-Location
 ```
 
+> If you encounter any problem while `npm i` use command `npm config set legacy-peer-deps true`
+
 The Angular development server runs at `http://localhost:4200/` by default.
 
 ## Authentication
@@ -120,59 +143,14 @@ Authenticated requests use:
 Authorization: Bearer <jwt>
 ```
 
-The API and AI orchestrator use the same JWT issuer, audience, signing key, expiration, and clock-skew settings. Keep the signing key in environment-specific configuration or user secrets outside production source control.
-
-## Main API Areas
-
-### Food entries
-
-```text
-POST   /api/food-entries
-GET    /api/food-entries
-PUT    /api/food-entries/{id}
-DELETE /api/food-entries/{id}
-POST   /api/food-entries/import-pdf
-```
-
-Food-entry listing supports date range, meal type, calorie filters, and pagination:
-
-```text
-GET /api/food-entries?from=2026-09-01&to=2026-09-06&mealType=Lunch&minCalories=400&page=1&pageSize=20
-```
-
-### Goals
-
-```text
-GET  /api/goals
-POST /api/goals
-PUT  /api/goals/{id}
-```
-
-Goal periods are inclusive. A new or edited goal cannot overlap another goal owned by the same user.
-
-### Reports
-
-```text
-GET /api/reports/daily
-GET /api/reports/trends
-```
-
-Report responses are paginated and include calorie, macro, fiber, sugar, mineral, and vitamin totals.
-
-### Image analysis
-
-```text
-POST /api/image-analysis/food
-```
-
-This endpoint accepts an image upload and returns structured food and nutrition estimates.
+The API and Chat Service use the same JWT issuer, audience, signing key, expiration, and clock-skew settings. Keep the signing key in environment-specific configuration or user secrets outside production source control.
 
 ### MCP
 
 The authenticated MCP server is available at:
 
 ```text
-/mcp
+/mcp 
 ```
 
 MCP tools cover food entries, goals, reports, user profile operations, nutrition summaries, and food image analysis. The MCP endpoint requires a valid JWT and uses the authenticated user's identity for every operation.
@@ -193,35 +171,12 @@ Build the API:
 dotnet build .\backend\Calory\Calory.Api\Calory.Api.csproj
 ```
 
-Build the AI orchestrator:
+Build the Chat Service:
 
 ```powershell
 dotnet build .\backend\Calory\Calory.Ai.Orchestrator\Calory.Ai.Orchestrator.csproj
 ```
 
-Build the frontend:
-
-```powershell
-Push-Location .\frontend
-npm run build
-Pop-Location
-```
-
-Create a new EF Core migration from the persistence project:
-
-```powershell
-dotnet ef migrations add MigrationName `
-  --project .\backend\Calory\Calory.Persistance\Calory.Persistance.csproj `
-  --startup-project .\backend\Calory\Calory.Api\Calory.Api.csproj
-```
-
-Apply migrations manually when needed:
-
-```powershell
-dotnet ef database update `
-  --project .\backend\Calory\Calory.Persistance\Calory.Persistance.csproj `
-  --startup-project .\backend\Calory\Calory.Api\Calory.Api.csproj
-```
 
 ## Data and Security Notes
 

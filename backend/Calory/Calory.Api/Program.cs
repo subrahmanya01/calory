@@ -11,6 +11,7 @@ using Calory.Domain;
 using Calory.Persistance;
 using Calory.Api.Options;
 using Microsoft.AspNetCore.Http.Json;
+using Calory.Api.Services;
 
 
 var builder = WebApplication.CreateBuilder(args);

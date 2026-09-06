@@ -2,16 +2,12 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Calory.Api.Options;
+using Calory.Api.Services;
 using Calory.Domain;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Calory.Api.Infrastructure;
-
-public interface IJwtTokenService
-{
-    string CreateToken(User user);
-}
 
 public sealed class JwtTokenService(IOptions<JwtOptions> options) : IJwtTokenService
 {

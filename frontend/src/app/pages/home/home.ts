@@ -56,6 +56,9 @@ export class Home {
   readonly editingEntry = signal<FoodEntry | null>(null);
   readonly chatOpen = signal(false);
   readonly chatExpanded = signal(false);
+  isLoggedIn(): boolean {
+    return !!this.user();
+  }
 
   readonly form = this.formBuilder.nonNullable.group({
     firstName: ['', Validators.required],

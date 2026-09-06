@@ -1,5 +1,5 @@
 using Calory.Api.Features.Users;
-using Calory.Api.Infrastructure;
+using Calory.Api.Services;
 using Calory.Domain;
 using Calory.Persistance.Interfaces;
 using FastEndpoints;
@@ -7,10 +7,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Calory.Api.Features.Auth.Login;
 
-public sealed class LoginEndpoint(
-    IUnitOfWork unitOfWork,
-    IPasswordHasher<User> passwordHasher,
-    IJwtTokenService tokenService) : Endpoint<LoginRequest, LoginResponse>
+public sealed class LoginEndpoint( IUnitOfWork unitOfWork, IPasswordHasher<User> passwordHasher, IJwtTokenService tokenService) : Endpoint<LoginRequest, LoginResponse>
 {
     public override void Configure()
     {

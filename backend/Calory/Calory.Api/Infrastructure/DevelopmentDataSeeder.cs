@@ -5,6 +5,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Calory.Api.Infrastructure;
 
+/// <summary>
+/// Only feeds data for development purposes. This class should not be used in production environments.
+/// </summary>
 public static class DevelopmentDataSeeder
 {
     private const string SeedMarker = "Development demo seed 2026-09";

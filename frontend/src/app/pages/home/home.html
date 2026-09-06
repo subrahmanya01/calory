@@ -301,14 +301,19 @@
     </main>
   }
   <app-footer />
+
+  @if(isLoggedIn())
+  {
   <button
-    class="chat-launcher"
-    type="button"
-    (click)="chatOpen.update((open) => !open); chatExpanded.set(false)"
-    aria-label="Open Calory assistant"
-  >
-    ✦
-  </button>
+      class="chat-launcher"
+      type="button"
+      (click)="chatOpen.update((open) => !open); chatExpanded.set(false)"
+      aria-label="Open Calory assistant"
+    >
+      ✦
+    </button>
+  }
+ 
   @if (chatOpen()) {
     <div class="chat-overlay" [class.chat-overlay-expanded]="chatExpanded()">
       <app-chat

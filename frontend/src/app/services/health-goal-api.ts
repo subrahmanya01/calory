@@ -14,7 +14,11 @@ export class HealthGoalApi {
   getAll(page = 1, pageSize = 20): Observable<PagedResponse<HealthGoal>> {
     return this.http.get<PagedResponse<HealthGoal>>(this.url, { params: { page, pageSize } });
   }
-  create(request: HealthGoalRequest): Observable<HealthGoal> { return this.http.post<HealthGoal>(this.url, request); }
+
+  create(request: HealthGoalRequest): Observable<HealthGoal> {
+    return this.http.post<HealthGoal>(this.url, request);
+  }
+  
   update(id: string, request: HealthGoalRequest): Observable<HealthGoal> {
     return this.http.put<HealthGoal>(`${this.url}/${id}`, { id, ...request });
   }
