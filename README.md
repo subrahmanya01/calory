@@ -5,6 +5,8 @@
 
 Calory is a full-stack nutrition tracking application. It helps users record meals, manage time-bound health goals, understand calorie and nutrient consumption, and interact with their nutrition data through an AI assistant.
 
+> [Demo](https://drive.google.com/file/d/1fL9RBAUq5pBbI8BQ7T-sv5xc5N9EGtwu/view?usp=sharing)
+
 ![High Level Block Diagram](./docs/images/login.png)
 ## What It Does
 
