@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using Calory.Api.Features;
 using Calory.Api.Features.Reports;
 using Calory.Persistance.Interfaces;
 using FastEndpoints;
@@ -6,7 +7,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace Calory.Api.Features.Reports.Trends;
 
-public sealed class TrendsEndpoint(IUnitOfWork unitOfWork) : Endpoint<ReportQueryRequest, List<TrendPoint>>
+public sealed class TrendsEndpoint(IUnitOfWork unitOfWork) : Endpoint<ReportQueryRequest, PagedResponse<TrendPoint>>
 {
     public override void Configure()
     {
@@ -16,7 +17,7 @@ public sealed class TrendsEndpoint(IUnitOfWork unitOfWork) : Endpoint<ReportQuer
         {
             summary.Summary = "Get nutrition trends";
             summary.Description = "Returns daily calorie and macro trend points for charts and comparisons.";
-            summary.Response<List<TrendPoint>>(200, "Daily trend points ordered chronologically.");
+            summary.Response<PagedResponse<TrendPoint>>(200, "A page of daily trend points ordered chronologically.");
             summary.Response(400, "The date range is invalid.");
         });
     }
@@ -43,10 +44,17 @@ public sealed class TrendsEndpoint(IUnitOfWork unitOfWork) : Endpoint<ReportQuer
             .Select(group =>
             {
                 var totals = NutritionTotals.From(group);
-                return new TrendPoint(group.Key, totals.Calories, totals.ProteinG, totals.CarbohydratesG, totals.FatG, totals.EntryCount);
+                return new TrendPoint(group.Key, totals.Calories, totals.ProteinG, totals.CarbohydratesG, totals.FatG,
+                    totals.FiberG, totals.SugarG, totals.SodiumMg, totals.CalciumMg, totals.IronMg,
+                    totals.MagnesiumMg, totals.PotassiumMg, totals.ZincMg, totals.VitaminAMcg,
+                    totals.VitaminB1Mg, totals.VitaminB2Mg, totals.VitaminB3Mg, totals.VitaminB6Mg,
+                    totals.VitaminB12Mcg, totals.VitaminCMg, totals.VitaminDMcg, totals.VitaminEMg,
+                    totals.VitaminKMcg, totals.EntryCount);
             })
             .ToList();
 
-        await Send.OkAsync(result, cancellationToken);
+        var (page, pageSize) = Pagination.Normalize(request.Page, request.PageSize);
+        var paged = result.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+        await Send.OkAsync(Pagination.Create(paged, page, pageSize, result.Count), cancellationToken);
     }
 }

@@ -39,7 +39,12 @@ public sealed class ReportTools(IUnitOfWork unitOfWork, IHttpContextAccessor htt
             .Select(group =>
             {
                 var totals = NutritionTotals.From(group);
-                return new TrendPoint(group.Key, totals.Calories, totals.ProteinG, totals.CarbohydratesG, totals.FatG, totals.EntryCount);
+                return new TrendPoint(group.Key, totals.Calories, totals.ProteinG, totals.CarbohydratesG, totals.FatG,
+                    totals.FiberG, totals.SugarG, totals.SodiumMg, totals.CalciumMg, totals.IronMg,
+                    totals.MagnesiumMg, totals.PotassiumMg, totals.ZincMg, totals.VitaminAMcg,
+                    totals.VitaminB1Mg, totals.VitaminB2Mg, totals.VitaminB3Mg, totals.VitaminB6Mg,
+                    totals.VitaminB12Mcg, totals.VitaminCMg, totals.VitaminDMcg, totals.VitaminEMg,
+                    totals.VitaminKMcg, totals.EntryCount);
             })
             .ToList();
         return JsonSerializer.Serialize(result);

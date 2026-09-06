@@ -18,6 +18,7 @@ public sealed class UpdateGoalEndpoint(IUnitOfWork unitOfWork) : Endpoint<Update
             summary.Response<HealthGoalResponse>(200, "The health goal was updated.");
             summary.Response(401, "The request does not contain a valid JWT.");
             summary.Response(404, "The goal was not found for the authenticated user.");
+            summary.Response(409, "The goal date range overlaps an existing goal.");
         });
     }
 
@@ -33,6 +34,14 @@ public sealed class UpdateGoalEndpoint(IUnitOfWork unitOfWork) : Endpoint<Update
         if (goal is null)
         {
             await Send.NotFoundAsync(cancellationToken);
+            return;
+        }
+
+        var existingGoals = await unitOfWork.HealthGoals.GetByUserIdAsync(userId, cancellationToken);
+        if (existingGoals.Any(existing => GoalDateRange.Overlaps(existing, request.StartDate, request.EndDate, goal.Id)))
+        {
+            AddError("The goal date range overlaps an existing goal. Choose a period that does not overlap.");
+            await Send.ErrorsAsync(409, cancellationToken);
             return;
         }
 

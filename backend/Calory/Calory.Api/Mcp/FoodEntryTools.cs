@@ -1,10 +1,9 @@
+using Calory.Api.Features.FoodEntries;
+using Calory.Persistance.Interfaces;
+using ModelContextProtocol.Server;
 using System.ComponentModel;
 using System.Security.Claims;
 using System.Text.Json;
-using Calory.Api.Features.FoodEntries;
-using Calory.Persistance.Interfaces;
-using Microsoft.AspNetCore.Http;
-using ModelContextProtocol.Server;
 
 namespace Calory.Api.Mcp;
 

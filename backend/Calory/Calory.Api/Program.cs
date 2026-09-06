@@ -150,6 +150,9 @@ using (var scope = app.Services.CreateScope())
                 FOREIGN KEY ("FoodEntryId") REFERENCES "FoodEntries" ("Id") ON DELETE CASCADE
         );
         """);
+
+    // if (app.Environment.IsDevelopment())
+    //     await DevelopmentDataSeeder.SeedAsync(dbContext);
 }
 
 if (app.Environment.IsDevelopment())

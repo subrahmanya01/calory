@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using Calory.Api.Features;
 using Calory.Api.Features.Reports;
 using Calory.Persistance.Interfaces;
 using FastEndpoints;
@@ -6,7 +7,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace Calory.Api.Features.Reports.DailySummary;
 
-public sealed class DailySummaryEndpoint(IUnitOfWork unitOfWork) : Endpoint<ReportQueryRequest, List<DailyNutritionResponse>>
+public sealed class DailySummaryEndpoint(IUnitOfWork unitOfWork) : Endpoint<ReportQueryRequest, PagedResponse<DailyNutritionResponse>>
 {
     public override void Configure()
     {
@@ -16,7 +17,7 @@ public sealed class DailySummaryEndpoint(IUnitOfWork unitOfWork) : Endpoint<Repo
         {
             summary.Summary = "Get daily nutrition totals";
             summary.Description = "Returns calories and macronutrient totals grouped by calendar day for the authenticated user.";
-            summary.Response<List<DailyNutritionResponse>>(200, "Daily nutrition totals.");
+            summary.Response<PagedResponse<DailyNutritionResponse>>(200, "A page of daily nutrition totals.");
             summary.Response(400, "The date range is invalid.");
         });
     }
@@ -43,6 +44,8 @@ public sealed class DailySummaryEndpoint(IUnitOfWork unitOfWork) : Endpoint<Repo
             .Select(group => new DailyNutritionResponse(group.Key, NutritionTotals.From(group)))
             .ToList();
 
-        await Send.OkAsync(result, cancellationToken);
+        var (page, pageSize) = Pagination.Normalize(request.Page, request.PageSize);
+        var paged = result.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+        await Send.OkAsync(Pagination.Create(paged, page, pageSize, result.Count), cancellationToken);
     }
 }

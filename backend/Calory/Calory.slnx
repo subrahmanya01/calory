@@ -1,5 +1,5 @@
 <Solution>
-  <Project Path="Calory.Ai.Orchestrator/Calory.Ai.Orchestrator.csproj" Id="17052585-aed6-4ffa-a8b0-7a12aafcaf43" />
+  <Project Path="Calory.Ai.Orchestrator/Calory.ChatService.csproj" Id="17052585-aed6-4ffa-a8b0-7a12aafcaf43" />
   <Project Path="Calory.Api/Calory.Api.csproj" />
   <Project Path="Calory.Domain/Calory.Domain.csproj" Id="c0f79696-a404-4195-aac1-f5bdbaaf7a10" />
   <Project Path="Calory.Persistance/Calory.Persistance.csproj" Id="101b659d-4a7c-4f79-a0bb-65ddba69843e" />
