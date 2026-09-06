@@ -7,6 +7,8 @@ public sealed class CaloryDbContext(DbContextOptions<CaloryDbContext> options) :
 {
     public DbSet<User> Users => Set<User>();
     public DbSet<HealthGoal> HealthGoals => Set<HealthGoal>();
+    public DbSet<FoodEntry> FoodEntries => Set<FoodEntry>();
+    public DbSet<FoodNutrition> FoodNutrition => Set<FoodNutrition>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -29,6 +31,29 @@ public sealed class CaloryDbContext(DbContextOptions<CaloryDbContext> options) :
             entity.Property(goal => goal.CarbTarget).HasPrecision(10, 2).IsRequired();
             entity.Property(goal => goal.FatTarget).HasPrecision(10, 2).IsRequired();
             entity.Property(goal => goal.WeightTarget).HasPrecision(10, 2).IsRequired();
+        });
+
+        modelBuilder.Entity<FoodEntry>(entity =>
+        {
+            entity.HasKey(entry => entry.Id);
+            entity.HasIndex(entry => new { entry.UserId, entry.ConsumedAt });
+            entity.Property(entry => entry.MealType).HasConversion<string>().HasMaxLength(20).IsRequired();
+            entity.Property(entry => entry.Source).HasConversion<string>().HasMaxLength(20).IsRequired();
+            entity.Property(entry => entry.FoodName).HasMaxLength(200).IsRequired();
+            entity.Property(entry => entry.Unit).HasMaxLength(40).IsRequired();
+            entity.HasOne(entry => entry.Nutrition)
+                .WithOne()
+                .HasForeignKey<FoodNutrition>(nutrition => nutrition.FoodEntryId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        modelBuilder.Entity<FoodNutrition>(entity =>
+        {
+            entity.HasKey(nutrition => nutrition.Id);
+            entity.Property(nutrition => nutrition.Calories).HasPrecision(10, 2).IsRequired();
+            entity.Property(nutrition => nutrition.ProteinG).HasPrecision(10, 2).IsRequired();
+            entity.Property(nutrition => nutrition.CarbohydratesG).HasPrecision(10, 2).IsRequired();
+            entity.Property(nutrition => nutrition.FatG).HasPrecision(10, 2).IsRequired();
         });
     }
 }

@@ -15,6 +15,7 @@ namespace Calory.Persistance
             services.AddDbContext<CaloryDbContext>(options => options.UseNpgsql(connectionString));
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IHealthGoalRepository, HealthGoalRepository>();
+            services.AddScoped<IFoodEntryRepository, FoodEntryRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             return services;

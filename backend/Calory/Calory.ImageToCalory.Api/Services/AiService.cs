@@ -7,24 +7,17 @@ namespace Calory.ImageToCalory.Api.Services
     {
         private readonly IAiModelStrategyResolver _resolver;
 
-        public AiService(
-            IAiModelStrategyResolver resolver)
+        public AiService( IAiModelStrategyResolver resolver)
         {
             _resolver = resolver;
         }
 
-        public async Task<AnalyzeImageResponse> AnalyzeImageAsync(
-            AnalyzeImageRequest request,
-            CancellationToken cancellationToken = default)
+        public async Task<AnalyzeImageResponse> AnalyzeImageAsync(AnalyzeImageRequest request, CancellationToken cancellationToken = default)
         {
             var strategy =
                 _resolver.Resolve(request.Model);
 
-            var result =
-                await strategy.AnalyzeImageAsync(
-                    request.Image,
-                    request.Prompt,
-                    cancellationToken);
+            var result = await strategy.AnalyzeImageAsync(request.Image, request.Prompt, cancellationToken);
 
             return new AnalyzeImageResponse
             {
@@ -34,5 +27,4 @@ namespace Calory.ImageToCalory.Api.Services
             };
         }
     }
-
 }

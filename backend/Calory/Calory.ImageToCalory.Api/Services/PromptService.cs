@@ -5,10 +5,6 @@
         ImageToCalory = 1,
     }
 
-    public interface IPromptService
-    {
-        Task<string> GetPrompt(AiPrompt prompt);
-    }
     public class PromptService : IPromptService
     {
         private static Dictionary<AiPrompt, string> _prompts = new Dictionary<AiPrompt, string>();
