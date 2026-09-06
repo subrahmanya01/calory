@@ -1,0 +1,8 @@
+<section class="pdf-import-backdrop" role="dialog" aria-modal="true" aria-labelledby="pdf-import-title">
+  <form class="pdf-import-panel" (submit)="$event.preventDefault(); upload()">
+    <div class="panel-heading"><div><p class="eyebrow">Bulk import</p><h2 id="pdf-import-title">Bring in your food diary.</h2><p>Upload a tabular PDF export. Calory will import rows with date, food, calories, protein, carbs, and fat.</p></div><button type="button" class="close-button" aria-label="Close" (click)="closed.emit()">×</button></div>
+    <label class="file-drop"><input type="file" accept="application/pdf,.pdf" (change)="choose($event)" /><span class="upload-icon">↑</span><strong>{{ selectedFile()?.name ?? 'Choose a PDF file' }}</strong><small>PDF only · maximum 10 MB</small></label>
+    @if (error()) { <p class="import-error">{{ error() }}</p> }
+    <div class="import-actions"><button type="button" class="cancel-button" (click)="closed.emit()">Cancel</button><button class="import-button" type="submit" [disabled]="!selectedFile() || uploading()">@if (uploading()) { <app-spinner /> Reading PDF... } @else { Import entries <span>↗</span> }</button></div>
+  </form>
+</section>

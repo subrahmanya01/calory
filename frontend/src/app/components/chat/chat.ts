@@ -1,15 +1,20 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, EventEmitter, Input, Output, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ChatApi, ChatMessage } from '../../services/chat-api';
 import { Spinner } from '../spinner/spinner';
+import { ChatMarkdownPipe } from './chat-markdown.pipe';
 
 @Component({
   selector: 'app-chat',
-  imports: [FormsModule, Spinner],
+  imports: [FormsModule, Spinner, ChatMarkdownPipe],
   templateUrl: './chat.html',
   styleUrl: './chat.css',
 })
 export class Chat {
+  @Input() expanded = false;
+  @Output() closed = new EventEmitter<void>();
+  @Output() expandedChange = new EventEmitter<boolean>();
+
   private readonly api = inject(ChatApi);
   readonly messages = signal<ChatMessage[]>([]);
   readonly draft = signal('');
@@ -20,6 +25,9 @@ export class Chat {
 
   get draftValue(): string { return this.draft(); }
   set draftValue(value: string) { this.draft.set(value); }
+
+  close(): void { this.closed.emit(); }
+  toggleExpanded(): void { this.expandedChange.emit(!this.expanded); }
 
   async send(text = this.draft()): Promise<void> {
     const message = text.trim(); if (!message || this.sending()) return;

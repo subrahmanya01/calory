@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { DailyNutrition, TrendPoint } from '../interfaces/report';
+import { PagedResponse } from '../interfaces/paged-response';
 
 @Injectable({ providedIn: 'root' })
 export class ReportApi {
@@ -10,12 +11,12 @@ export class ReportApi {
 
   constructor(private readonly http: HttpClient) {}
 
-  daily(from: string, to: string): Observable<DailyNutrition[]> {
-    return this.http.get<DailyNutrition[]>(`${this.url}/daily`, { params: this.range(from, to) });
+  daily(from: string, to: string): Observable<PagedResponse<DailyNutrition>> {
+    return this.http.get<PagedResponse<DailyNutrition>>(`${this.url}/daily`, { params: this.range(from, to) });
   }
 
-  trends(from: string, to: string): Observable<TrendPoint[]> {
-    return this.http.get<TrendPoint[]>(`${this.url}/trends`, { params: this.range(from, to) });
+  trends(from: string, to: string): Observable<PagedResponse<TrendPoint>> {
+    return this.http.get<PagedResponse<TrendPoint>>(`${this.url}/trends`, { params: this.range(from, to) });
   }
 
   private range(from: string, to: string): HttpParams { return new HttpParams().set('from', from).set('to', to); }
