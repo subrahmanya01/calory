@@ -13,6 +13,10 @@
     <PackageReference Include="FastEndpoints.Generator" Version="8.3.0" />
     <PackageReference Include="FastEndpoints.Security" Version="8.3.0" />
     <PackageReference Include="FastEndpoints.Swagger" Version="8.3.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.11">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="ModelContextProtocol.AspNetCore" Version="2.2.0" />
     <PackageReference Include="PdfPig" Version="0.1.9" />
   </ItemGroup>

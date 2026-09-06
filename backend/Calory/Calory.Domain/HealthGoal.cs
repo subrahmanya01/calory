@@ -21,7 +21,6 @@ namespace Calory.Domain
 
         public DateOnly StartDate { get; set; }
 
-        // Nullable assuming goals might not have a set end date
         public DateOnly? EndDate { get; set; } 
 
         public bool IsActive { get; set; }
