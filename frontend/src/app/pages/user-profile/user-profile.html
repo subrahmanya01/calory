@@ -1,0 +1,8 @@
+<section class="fixed inset-0 z-20 grid place-items-center bg-[#27352f]/35 p-4" role="dialog" aria-modal="true" aria-labelledby="profile-title">
+  <form class="profile-modal" [formGroup]="form" (ngSubmit)="submit()">
+    <div class="modal-heading"><div><p class="eyebrow">Your details</p><h2 id="profile-title">Profile settings</h2></div><button type="button" class="close-button" (click)="closed.emit()" aria-label="Close">×</button></div>
+    @if (error()) { <p class="error">{{ error() }}</p> }
+    <div class="fields"><label>First name<input formControlName="firstName" /></label><label>Last name<input formControlName="lastName" /></label><label class="wide">Email<input type="email" formControlName="email" /></label><label class="wide">New password <span>optional</span><input type="password" formControlName="password" placeholder="Leave blank to keep it" /></label></div>
+    <div class="actions"><button class="cancel" type="button" (click)="closed.emit()">Cancel</button><button class="save" type="submit" [disabled]="saving()">@if (saving()) { <app-spinner /> } @else { Save profile }</button></div>
+  </form>
+</section>

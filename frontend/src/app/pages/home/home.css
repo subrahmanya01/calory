@@ -356,3 +356,8 @@ h2 {
         grid-column: auto;
     }
 }
+.goal-summary { margin-top: 1.8rem; padding-top: 1.4rem; border-top: 1px solid #e2e7dc; }
+.goal-summary div { display: grid; gap: .25rem; }.goal-summary strong { color: #34483c; font: 2rem Georgia, serif; letter-spacing: -.04em; }.goal-summary span { color: #829087; font-size: .7rem; text-transform: uppercase; letter-spacing: .08em; }
+.empty-copy { color: #829087; font-size: .82rem; line-height: 1.5; }
+.trend-chart { border-bottom: 1px solid #dce4d3; }.trend-column { display: flex; min-width: 2rem; height: 100%; flex: 1; flex-direction: column; justify-content: end; align-items: center; gap: .55rem; }.trend-column span { width: min(1.25rem, 70%); min-height: .25rem; background: #8ca74f; border-radius: 4px 4px 0 0; transition: height .25s ease; }.trend-column small { color: #829087; font-size: .62rem; }
+.entry-row { padding: .75rem 0; border-bottom: 1px solid rgba(111,134,63,.18); }.entry-row:last-child { border-bottom: 0; }.entry-row div:first-child { display: grid; gap: .2rem; }.entry-row strong { color: #34483c; font-size: .85rem; }.entry-row span { color: #829087; font-size: .7rem; }.entry-row .delete-link { color: #a85d4f; font-size: 1rem; }
