@@ -54,7 +54,7 @@ public sealed class FoodAnalysisEndpoint : Endpoint<FoodAnalysisRequest, FoodAna
             await using var memoryStream = new MemoryStream();
             await image.CopyToAsync(memoryStream, cancellationToken);
 
-            var client = new Client(apiKey: _configuration["Vlm:Key"]);
+            var client = new Client(apiKey: _configuration["Gemini:ApiKey"]);
             var response = await client.Models.GenerateContentAsync(
                 model: "gemini-2.5-flash",
                 contents: new List<Content>
