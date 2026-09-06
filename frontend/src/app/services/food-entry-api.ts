@@ -2,26 +2,13 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { FoodEntry, FoodEntryRequest } from '../interfaces/food-entry';
+import {
+  FoodEntry,
+  FoodEntryQuery,
+  FoodEntryRequest,
+  ImportFoodEntriesResponse,
+} from '../interfaces/food-entry';
 import { PagedResponse } from '../interfaces/paged-response';
-
-export interface FoodEntryQuery {
-  from?: string;
-  to?: string;
-  mealType?: string;
-  minCalories?: number;
-  maxCalories?: number;
-  page?: number;
-  pageSize?: number;
-}
-
-export interface ImportSkippedRow { rowNumber: number; content: string; reason: string; }
-export interface ImportFoodEntriesResponse {
-  importedCount: number;
-  skippedCount: number;
-  importedEntries: FoodEntry[];
-  skippedRows: ImportSkippedRow[];
-}
 
 @Injectable({ providedIn: 'root' })
 export class FoodEntryApi {
@@ -40,11 +27,18 @@ export class FoodEntryApi {
     return this.http.get<PagedResponse<FoodEntry>>(this.url, { params });
   }
 
-  create(request: FoodEntryRequest): Observable<FoodEntry> { return this.http.post<FoodEntry>(this.url, request); }
+  create(request: FoodEntryRequest): Observable<FoodEntry> {
+    return this.http.post<FoodEntry>(this.url, request);
+  }
+
   update(id: string, request: FoodEntryRequest): Observable<FoodEntry> {
     return this.http.put<FoodEntry>(`${this.url}/${id}`, { id, ...request });
   }
-  remove(id: string): Observable<void> { return this.http.delete<void>(`${this.url}/${id}`); }
+
+  remove(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.url}/${id}`);
+  }
+  
   importPdf(file: File): Observable<ImportFoodEntriesResponse> {
     const formData = new FormData();
     formData.append('file', file, file.name);

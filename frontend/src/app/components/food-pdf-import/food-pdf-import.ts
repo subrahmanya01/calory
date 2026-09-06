@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Output, inject, signal } from '@angular/core';
-import { FoodEntryApi, ImportFoodEntriesResponse } from '../../services/food-entry-api';
+import { FoodEntryApi } from '../../services/food-entry-api';
 import { Spinner } from '../spinner/spinner';
+import { ImportFoodEntriesResponse } from '../../interfaces/food-entry';
 
 @Component({
   selector: 'app-food-pdf-import',
@@ -35,8 +36,14 @@ export class FoodPdfImport {
     this.uploading.set(true);
     this.error.set('');
     this.api.importPdf(file).subscribe({
-      next: (result) => { this.uploading.set(false); this.imported.emit(result); },
-      error: () => { this.uploading.set(false); this.error.set('We could not read that PDF. Check that it contains a tabular food diary.'); },
+      next: (result) => {
+        this.uploading.set(false);
+        this.imported.emit(result);
+      },
+      error: () => {
+        this.uploading.set(false);
+        this.error.set('We could not read that PDF. Check that it contains a tabular food diary.');
+      },
     });
   }
 }

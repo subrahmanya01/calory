@@ -1,6 +1,0 @@
-@if (snack(); as current) {
-	<div class="snackbar" [class.error]="current.tone === 'error'" role="status">
-		<span class="snack-mark">{{ current.tone === 'success' ? '✓' : '!' }}</span>
-		{{ current.message }}
-	</div>
-}

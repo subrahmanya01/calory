@@ -1,45 +1,45 @@
 .register-page .auth-layout {
-    grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
 }
 
 .principles {
-    display: flex;
-    flex-wrap: wrap;
-    gap: .55rem;
-    margin-top: 4rem;
-    color: #748078;
-    font-size: .68rem;
-    letter-spacing: .1em;
-    text-transform: uppercase;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  margin-top: 4rem;
+  color: #748078;
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
 }
 
 .principles span {
-    padding: .5rem .65rem;
-    border: 1px solid #d6dec9;
-    border-radius: 3px;
+  padding: 0.5rem 0.65rem;
+  border: 1px solid #d6dec9;
+  border-radius: 3px;
 }
 
 .two-up {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: .8rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.8rem;
 }
 
 @media (max-width: 760px) {
-    .register-page .auth-layout {
-        display: block;
-    }
+  .register-page .auth-layout {
+    display: block;
+  }
 
-    .register-page .auth-intro {
-        padding-bottom: 2rem;
-    }
+  .register-page .auth-intro {
+    padding-bottom: 2rem;
+  }
 
-    .principles {
-        margin-top: 2rem;
-    }
+  .principles {
+    margin-top: 2rem;
+  }
 
-    .two-up {
-        grid-template-columns: 1fr;
-        gap: 1rem;
-    }
+  .two-up {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
 }

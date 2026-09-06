@@ -15,13 +15,22 @@ export class Header {
   readonly profileOpen = signal(false);
   readonly user = signal<User | null>(null);
 
-  constructor(private readonly router: Router, private readonly userApi: UserApi, private readonly elementRef: ElementRef<HTMLElement>) {
-    if (this.signedIn) this.userApi.currentUser().subscribe({ next: (user) => this.user.set(user) });
+  constructor(
+    private readonly router: Router,
+    private readonly userApi: UserApi,
+    private readonly elementRef: ElementRef<HTMLElement>,
+  ) {
+    if (this.signedIn)
+      this.userApi.currentUser().subscribe({ next: (user) => this.user.set(user) });
   }
 
-  get signedIn(): boolean { return !!localStorage.getItem('calory_token'); }
+  get signedIn(): boolean {
+    return !!localStorage.getItem('calory_token');
+  }
 
-  toggleMenu(): void { this.menuOpen.update((open) => !open); }
+  toggleMenu(): void {
+    this.menuOpen.update((open) => !open);
+  }
 
   @HostListener('document:click', ['$event'])
   closeMenuWhenClickingOutside(event: MouseEvent): void {
@@ -29,13 +38,18 @@ export class Header {
     if (target && !this.elementRef.nativeElement.contains(target)) this.menuOpen.set(false);
   }
 
-  openProfile(): void { this.menuOpen.set(false); this.profileOpen.set(true); }
-  profileSaved(user: User): void { this.user.set(user); this.profileOpen.set(false); }
+  openProfile(): void {
+    this.menuOpen.set(false);
+    this.profileOpen.set(true);
+  }
+  profileSaved(user: User): void {
+    this.user.set(user);
+    this.profileOpen.set(false);
+  }
 
   logout(): void {
     this.menuOpen.set(false);
     localStorage.removeItem('calory_token');
     this.router.navigateByUrl('/login');
   }
-
 }

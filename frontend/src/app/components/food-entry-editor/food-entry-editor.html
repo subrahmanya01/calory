@@ -1,15 +1,81 @@
-<section class="fixed inset-0 z-10 grid place-items-center bg-[#27352f]/35 p-4" role="dialog" aria-modal="true">
-  <form class="max-h-[92vh] w-full max-w-2xl overflow-auto rounded-lg bg-[#fffdf7] p-6 shadow-2xl sm:p-8" [formGroup]="form" (ngSubmit)="submit()">
-    <div class="mb-6 flex items-start justify-between"><div><p class="eyebrow">Daily record</p><h2 class="font-serif text-4xl font-normal tracking-[-.05em]">{{ entry ? 'Edit this entry.' : 'Add a meal.' }}</h2></div><button class="text-2xl text-[#718077]" type="button" aria-label="Close" (click)="closed.emit()">×</button></div>
-    @if (error()) { <p class="mb-4 rounded bg-[#fff0e9] p-3 text-sm text-[#a64d3e]">{{ error() }}</p> }
-    <div class="grid gap-4 sm:grid-cols-2">
-      <label class="field">Meal <select formControlName="mealType">@for (meal of meals; track meal) { <option [value]="meal">{{ meal }}</option> }</select></label>
-      <label class="field">Food name <input formControlName="foodName" placeholder="e.g. Oat bowl" /></label>
-      <label class="field">Quantity <input type="number" formControlName="quantity" /></label><label class="field">Unit <input formControlName="unit" placeholder="bowl, cup, plate" /></label>
-      <label class="field sm:col-span-2">Consumed at <input type="datetime-local" formControlName="consumedAt" /></label>
-      <div class="sm:col-span-2 border-t border-[#e2e7dc] pt-4"><p class="mb-3 text-xs font-bold uppercase tracking-[.12em] text-[#8a9a4b]">Nutrition per serving</p><div class="grid grid-cols-2 gap-4 sm:grid-cols-5"><label class="field">Calories<input type="number" formControlName="calories" /></label><label class="field">Protein<input type="number" formControlName="proteinG" /></label><label class="field">Carbs<input type="number" formControlName="carbohydratesG" /></label><label class="field">Fat<input type="number" formControlName="fatG" /></label><label class="field">Fiber<input type="number" formControlName="fiberG" /></label></div></div>
-      <label class="field sm:col-span-2">Notes <textarea rows="2" formControlName="notes" placeholder="Anything worth remembering?"></textarea></label>
+<section
+  class="fixed inset-0 z-10 grid place-items-center bg-[#27352f]/35 p-4"
+  role="dialog"
+  aria-modal="true"
+>
+  <form
+    class="max-h-[92vh] w-full max-w-2xl overflow-auto rounded-lg bg-[#fffdf7] p-6 shadow-2xl sm:p-8"
+    [formGroup]="form"
+    (ngSubmit)="submit()"
+  >
+    <div class="mb-6 flex items-start justify-between">
+      <div>
+        <p class="eyebrow">Daily record</p>
+        <h2 class="font-serif text-4xl font-normal tracking-[-.05em]">
+          {{ entry ? 'Edit this entry.' : 'Add a meal.' }}
+        </h2>
+      </div>
+      <button
+        class="text-2xl text-[#718077]"
+        type="button"
+        aria-label="Close"
+        (click)="closed.emit()"
+      >
+        ×
+      </button>
     </div>
-    <div class="mt-7 flex justify-end gap-3"><button class="secondary-button" type="button" (click)="closed.emit()">Cancel</button><button class="primary-button" type="submit" [disabled]="saving()">@if (saving()) { <app-spinner /> } @else { Save entry <span>↗</span> }</button></div>
+    @if (error()) {
+      <p class="mb-4 rounded bg-[#fff0e9] p-3 text-sm text-[#a64d3e]">{{ error() }}</p>
+    }
+    <div class="grid gap-4 sm:grid-cols-2">
+      <label class="field"
+        >Meal
+        <select formControlName="mealType">
+          @for (meal of meals; track meal) {
+            <option [value]="meal">{{ meal }}</option>
+          }
+        </select></label
+      >
+      <label class="field"
+        >Food name <input formControlName="foodName" placeholder="e.g. Oat bowl"
+      /></label>
+      <label class="field">Quantity <input type="number" formControlName="quantity" /></label
+      ><label class="field"
+        >Unit <input formControlName="unit" placeholder="bowl, cup, plate"
+      /></label>
+      <label class="field sm:col-span-2"
+        >Consumed at <input type="datetime-local" formControlName="consumedAt"
+      /></label>
+      <div class="sm:col-span-2 border-t border-[#e2e7dc] pt-4">
+        <p class="mb-3 text-xs font-bold uppercase tracking-[.12em] text-[#8a9a4b]">
+          Nutrition per serving
+        </p>
+        <div class="grid grid-cols-2 gap-4 sm:grid-cols-5">
+          <label class="field">Calories<input type="number" formControlName="calories" /></label
+          ><label class="field">Protein<input type="number" formControlName="proteinG" /></label
+          ><label class="field">Carbs<input type="number" formControlName="carbohydratesG" /></label
+          ><label class="field">Fat<input type="number" formControlName="fatG" /></label
+          ><label class="field">Fiber<input type="number" formControlName="fiberG" /></label>
+        </div>
+      </div>
+      <label class="field sm:col-span-2"
+        >Notes
+        <textarea
+          rows="2"
+          formControlName="notes"
+          placeholder="Anything worth remembering?"
+        ></textarea>
+      </label>
+    </div>
+    <div class="mt-7 flex justify-end gap-3">
+      <button class="secondary-button" type="button" (click)="closed.emit()">Cancel</button
+      ><button class="primary-button" type="submit" [disabled]="saving()">
+        @if (saving()) {
+          <app-spinner />
+        } @else {
+          Save entry <span>↗</span>
+        }
+      </button>
+    </div>
   </form>
 </section>

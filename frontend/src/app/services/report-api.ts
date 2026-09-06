@@ -12,12 +12,18 @@ export class ReportApi {
   constructor(private readonly http: HttpClient) {}
 
   daily(from: string, to: string): Observable<PagedResponse<DailyNutrition>> {
-    return this.http.get<PagedResponse<DailyNutrition>>(`${this.url}/daily`, { params: this.range(from, to) });
+    return this.http.get<PagedResponse<DailyNutrition>>(`${this.url}/daily`, {
+      params: this.range(from, to),
+    });
   }
 
   trends(from: string, to: string): Observable<PagedResponse<TrendPoint>> {
-    return this.http.get<PagedResponse<TrendPoint>>(`${this.url}/trends`, { params: this.range(from, to) });
+    return this.http.get<PagedResponse<TrendPoint>>(`${this.url}/trends`, {
+      params: this.range(from, to),
+    });
   }
 
-  private range(from: string, to: string): HttpParams { return new HttpParams().set('from', from).set('to', to); }
+  private range(from: string, to: string): HttpParams {
+    return new HttpParams().set('from', from).set('to', to);
+  }
 }

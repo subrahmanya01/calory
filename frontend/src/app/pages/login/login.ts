@@ -22,22 +22,28 @@ export class Login {
     password: ['', Validators.required],
   });
 
-  constructor(private readonly api: UserApi, private readonly router: Router) {}
+  constructor(
+    private readonly api: UserApi,
+    private readonly router: Router,
+  ) {}
 
   submit(): void {
-    if (this.form.invalid) { this.form.markAllAsTouched(); return; }
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
     this.submitting.set(true);
     this.error.set('');
     const { email, password } = this.form.getRawValue();
     this.api.login(email, password).subscribe({
-      next: (response) => { 
-        localStorage.setItem('calory_token', response.token); 
-        this.router.navigateByUrl('/home'); 
+      next: (response) => {
+        localStorage.setItem('calory_token', response.token);
+        this.router.navigateByUrl('/home');
       },
-      error: () => { 
-        this.error.set('Those details did not match. Try again or create an account.'); 
-        this.submitting.set(false); },
+      error: () => {
+        this.error.set('Those details did not match. Try again or create an account.');
+        this.submitting.set(false);
+      },
     });
   }
-
 }

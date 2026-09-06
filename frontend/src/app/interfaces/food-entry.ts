@@ -56,3 +56,25 @@ export interface FoodAnalysisResponse {
   unit: string;
   nutrition: FoodNutrition;
 }
+
+export interface FoodEntryQuery {
+  from?: string;
+  to?: string;
+  mealType?: string;
+  minCalories?: number;
+  maxCalories?: number;
+  page?: number;
+  pageSize?: number;
+}
+
+export interface ImportSkippedRow {
+  rowNumber: number;
+  content: string;
+  reason: string;
+}
+export interface ImportFoodEntriesResponse {
+  importedCount: number;
+  skippedCount: number;
+  importedEntries: FoodEntry[];
+  skippedRows: ImportSkippedRow[];
+}

@@ -1,4 +1,13 @@
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, inject, signal } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges,
+  inject,
+  signal,
+} from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HealthGoal, HealthGoalRequest } from '../../interfaces/health-goal';
 import { HealthGoalApi } from '../../services/health-goal-api';
@@ -32,30 +41,49 @@ export class GoalEditor implements OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['goal']) {
       const goal = this.goal;
-      this.form.patchValue(goal ? {
-        dailyCalorieTarget: goal.dailyCalorieTarget,
-        proteinTarget: goal.proteinTarget,
-        carbTarget: goal.carbTarget,
-        fatTarget: goal.fatTarget,
-        weightTarget: goal.weightTarget,
-        startDate: goal.startDate,
-        endDate: goal.endDate ?? '',
-      } : {
-        dailyCalorieTarget: 2000, proteinTarget: 120, carbTarget: 220,
-        fatTarget: 65, weightTarget: 70, startDate: new Date().toISOString().slice(0, 10), endDate: '',
-      });
+      this.form.patchValue(
+        goal
+          ? {
+              dailyCalorieTarget: goal.dailyCalorieTarget,
+              proteinTarget: goal.proteinTarget,
+              carbTarget: goal.carbTarget,
+              fatTarget: goal.fatTarget,
+              weightTarget: goal.weightTarget,
+              startDate: goal.startDate,
+              endDate: goal.endDate ?? '',
+            }
+          : {
+              dailyCalorieTarget: 2000,
+              proteinTarget: 120,
+              carbTarget: 220,
+              fatTarget: 65,
+              weightTarget: 70,
+              startDate: new Date().toISOString().slice(0, 10),
+              endDate: '',
+            },
+      );
     }
   }
 
   submit(): void {
-    if (this.form.invalid) { this.form.markAllAsTouched(); return; }
-    this.saving.set(true); this.error.set('');
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
+    this.saving.set(true);
+    this.error.set('');
     const value = this.form.getRawValue();
     const request: HealthGoalRequest = { ...value, endDate: value.endDate || null };
     const call = this.goal ? this.api.update(this.goal.id, request) : this.api.create(request);
     call.subscribe({
-      next: (goal) => { this.saving.set(false); this.saved.emit(goal); },
-      error: () => { this.saving.set(false); this.error.set('We could not save this goal. Please try again.'); },
+      next: (goal) => {
+        this.saving.set(false);
+        this.saved.emit(goal);
+      },
+      error: () => {
+        this.saving.set(false);
+        this.error.set('We could not save this goal. Please try again.');
+      },
     });
   }
 }

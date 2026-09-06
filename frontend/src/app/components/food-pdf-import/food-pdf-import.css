@@ -1,4 +1,134 @@
-.pdf-import-backdrop { position: fixed; inset: 0; z-index: 20; display: grid; place-items: center; padding: 1rem; background: rgba(39, 53, 47, .42); }
-.pdf-import-panel { width: min(100%, 38rem); padding: 2rem; color: #27352f; background: #fffdf7; border: 1px solid #dce4d3; border-radius: 8px; box-shadow: 0 24px 70px rgba(39,53,47,.24); }
-.panel-heading { display: flex; justify-content: space-between; gap: 1rem; }.eyebrow { margin: 0 0 .55rem; color: #8a9a4b; font-size: .65rem; font-weight: 800; letter-spacing: .15em; text-transform: uppercase; }.panel-heading h2 { margin: 0; font: 2rem Georgia, serif; letter-spacing: -.04em; }.panel-heading p:last-child { max-width: 29rem; margin: .8rem 0 0; color: #718077; font-size: .82rem; line-height: 1.5; }.close-button { width: 2rem; height: 2rem; padding: 0; color: #718077; background: none; border: 0; font-size: 1.6rem; cursor: pointer; }.file-drop { display: grid; place-items: center; gap: .45rem; margin-top: 1.8rem; padding: 2.4rem 1rem; color: #506344; background: #f0f5df; border: 1px dashed #aebe8e; border-radius: 6px; text-align: center; cursor: pointer; }.file-drop input { position: absolute; width: 1px; height: 1px; opacity: 0; }.upload-icon { display: grid; width: 2.5rem; height: 2.5rem; place-items: center; color: #34483c; background: #d8f06d; border-radius: 50%; font-size: 1.3rem; }.file-drop small { color: #829087; font-size: .7rem; }.import-error { margin: 1rem 0 0; padding: .75rem; color: #a64d3e; background: #fff0e9; border-radius: 4px; font-size: .78rem; }.import-actions { display: flex; justify-content: end; gap: .6rem; margin-top: 1.5rem; }.cancel-button, .import-button { min-height: 2.7rem; padding: .7rem 1rem; border: 0; border-radius: 4px; font: 700 .78rem inherit; cursor: pointer; }.cancel-button { color: #506344; background: transparent; }.import-button { display: inline-flex; align-items: center; gap: .55rem; color: #f8faef; background: #27352f; }.import-button:disabled { opacity: .45; cursor: default; }
-@media (max-width: 500px) { .pdf-import-panel { padding: 1.3rem; }.panel-heading h2 { font-size: 1.7rem; } }
+.pdf-import-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  background: rgba(39, 53, 47, 0.42);
+}
+.pdf-import-panel {
+  width: min(100%, 38rem);
+  padding: 2rem;
+  color: #27352f;
+  background: #fffdf7;
+  border: 1px solid #dce4d3;
+  border-radius: 8px;
+  box-shadow: 0 24px 70px rgba(39, 53, 47, 0.24);
+}
+.panel-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.eyebrow {
+  margin: 0 0 0.55rem;
+  color: #8a9a4b;
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+.panel-heading h2 {
+  margin: 0;
+  font:
+    2rem Georgia,
+    serif;
+  letter-spacing: -0.04em;
+}
+.panel-heading p:last-child {
+  max-width: 29rem;
+  margin: 0.8rem 0 0;
+  color: #718077;
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+.close-button {
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  color: #718077;
+  background: none;
+  border: 0;
+  font-size: 1.6rem;
+  cursor: pointer;
+}
+.file-drop {
+  display: grid;
+  place-items: center;
+  gap: 0.45rem;
+  margin-top: 1.8rem;
+  padding: 2.4rem 1rem;
+  color: #506344;
+  background: #f0f5df;
+  border: 1px dashed #aebe8e;
+  border-radius: 6px;
+  text-align: center;
+  cursor: pointer;
+}
+.file-drop input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+.upload-icon {
+  display: grid;
+  width: 2.5rem;
+  height: 2.5rem;
+  place-items: center;
+  color: #34483c;
+  background: #d8f06d;
+  border-radius: 50%;
+  font-size: 1.3rem;
+}
+.file-drop small {
+  color: #829087;
+  font-size: 0.7rem;
+}
+.import-error {
+  margin: 1rem 0 0;
+  padding: 0.75rem;
+  color: #a64d3e;
+  background: #fff0e9;
+  border-radius: 4px;
+  font-size: 0.78rem;
+}
+.import-actions {
+  display: flex;
+  justify-content: end;
+  gap: 0.6rem;
+  margin-top: 1.5rem;
+}
+.cancel-button,
+.import-button {
+  min-height: 2.7rem;
+  padding: 0.7rem 1rem;
+  border: 0;
+  border-radius: 4px;
+  font: 700 0.78rem inherit;
+  cursor: pointer;
+}
+.cancel-button {
+  color: #506344;
+  background: transparent;
+}
+.import-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  color: #f8faef;
+  background: #27352f;
+}
+.import-button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+@media (max-width: 500px) {
+  .pdf-import-panel {
+    padding: 1.3rem;
+  }
+  .panel-heading h2 {
+    font-size: 1.7rem;
+  }
+}

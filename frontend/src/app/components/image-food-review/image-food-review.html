@@ -1,11 +1,87 @@
-<section class="fixed inset-0 z-10 grid place-items-center bg-[#27352f]/35 p-4" role="dialog" aria-modal="true" aria-labelledby="image-review-title">
-  <div class="max-h-[92vh] w-full max-w-3xl overflow-auto rounded-lg bg-[#fffdf7] p-6 shadow-2xl sm:p-8">
-    <div class="mb-6 flex items-start justify-between"><div><p class="eyebrow">Vision-assisted entry</p><h2 id="image-review-title" class="font-serif text-4xl font-normal tracking-[-.05em]">See it. Tune it. Save it.</h2><p class="mt-2 text-sm text-[#718077]">Upload a meal photo, then check the estimate before it enters your record.</p></div><button class="text-2xl text-[#718077]" type="button" (click)="closed.emit()">×</button></div>
-    @if (error()) { <p class="mb-4 rounded bg-[#fff0e9] p-3 text-sm text-[#a64d3e]">{{ error() }}</p> }
-    @if (!preview()) { <label class="dropzone flex cursor-pointer flex-col items-center justify-center rounded border-2 border-dashed border-[#cbd5b9] bg-[#f8f9f0] p-12 text-center"><span class="mb-3 text-4xl">↑</span><strong class="text-[#34483c]">Choose a meal photo</strong><span class="mt-2 text-sm text-[#849087]">JPG, PNG, or WEBP up to 10 MB</span><input class="hidden" type="file" accept="image/*" (change)="analyze($any($event.target).files?.[0] ?? null)" /></label> }
-    @if (analyzing()) { <div class="flex items-center justify-center gap-3 py-12 text-[#718077]"><app-spinner /> Reading the visible meal...</div> }
+<section
+  class="fixed inset-0 z-10 grid place-items-center bg-[#27352f]/35 p-4"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="image-review-title"
+>
+  <div
+    class="max-h-[92vh] w-full max-w-3xl overflow-auto rounded-lg bg-[#fffdf7] p-6 shadow-2xl sm:p-8"
+  >
+    <div class="mb-6 flex items-start justify-between">
+      <div>
+        <p class="eyebrow">Vision-assisted entry</p>
+        <h2 id="image-review-title" class="font-serif text-4xl font-normal tracking-[-.05em]">
+          See it. Tune it. Save it.
+        </h2>
+        <p class="mt-2 text-sm text-[#718077]">
+          Upload a meal photo, then check the estimate before it enters your record.
+        </p>
+      </div>
+      <button class="text-2xl text-[#718077]" type="button" (click)="closed.emit()">×</button>
+    </div>
+    @if (error()) {
+      <p class="mb-4 rounded bg-[#fff0e9] p-3 text-sm text-[#a64d3e]">{{ error() }}</p>
+    }
+    @if (!preview()) {
+      <label
+        class="dropzone flex cursor-pointer flex-col items-center justify-center rounded border-2 border-dashed border-[#cbd5b9] bg-[#f8f9f0] p-12 text-center"
+        ><span class="mb-3 text-4xl">↑</span
+        ><strong class="text-[#34483c]">Choose a meal photo</strong
+        ><span class="mt-2 text-sm text-[#849087]">JPG, PNG, or WEBP up to 10 MB</span
+        ><input
+          class="hidden"
+          type="file"
+          accept="image/*"
+          (change)="analyze($any($event.target).files?.[0] ?? null)"
+      /></label>
+    }
+    @if (analyzing()) {
+      <div class="flex items-center justify-center gap-3 py-12 text-[#718077]">
+        <app-spinner /> Reading the visible meal...
+      </div>
+    }
     @if (preview() && !analyzing()) {
-      <form [formGroup]="form" (ngSubmit)="save()" class="grid gap-5 sm:grid-cols-[10rem_1fr]"><img class="h-40 w-40 rounded object-cover" [src]="preview()" alt="Uploaded meal" /><div class="grid gap-4 sm:grid-cols-2"><label class="field sm:col-span-2">Food name<input formControlName="foodName" /></label><label class="field">Meal<select formControlName="mealType">@for (meal of meals; track meal) { <option [value]="meal">{{ meal }}</option> }</select></label><label class="field">Quantity<input type="number" formControlName="quantity" /></label><label class="field">Unit<input formControlName="unit" /></label><label class="field">Consumed at<input type="datetime-local" formControlName="consumedAt" /></label><div class="sm:col-span-2"><p class="mb-2 text-xs font-bold uppercase tracking-[.12em] text-[#8a9a4b]">Estimated nutrition</p><div class="grid grid-cols-2 gap-3 sm:grid-cols-5"><label class="field">Calories<input type="number" formControlName="calories" /></label><label class="field">Protein<input type="number" formControlName="proteinG" /></label><label class="field">Carbs<input type="number" formControlName="carbohydratesG" /></label><label class="field">Fat<input type="number" formControlName="fatG" /></label><label class="field">Fiber<input type="number" formControlName="fiberG" /></label></div></div></div><div class="sm:col-span-2 flex justify-end gap-3"><button class="secondary-button" type="button" (click)="preview.set(null)">Choose another</button><button class="primary-button" type="submit" [disabled]="saving()">@if (saving()) { <app-spinner /> } @else { Save to today <span>↗</span> }</button></div></form>
+      <form [formGroup]="form" (ngSubmit)="save()" class="grid gap-5 sm:grid-cols-[10rem_1fr]">
+        <img class="h-40 w-40 rounded object-cover" [src]="preview()" alt="Uploaded meal" />
+        <div class="grid gap-4 sm:grid-cols-2">
+          <label class="field sm:col-span-2">Food name<input formControlName="foodName" /></label
+          ><label class="field"
+            >Meal<select formControlName="mealType">
+              @for (meal of meals; track meal) {
+                <option [value]="meal">{{ meal }}</option>
+              }
+            </select></label
+          ><label class="field">Quantity<input type="number" formControlName="quantity" /></label
+          ><label class="field">Unit<input formControlName="unit" /></label
+          ><label class="field"
+            >Consumed at<input type="datetime-local" formControlName="consumedAt"
+          /></label>
+          <div class="sm:col-span-2">
+            <p class="mb-2 text-xs font-bold uppercase tracking-[.12em] text-[#8a9a4b]">
+              Estimated nutrition
+            </p>
+            <div class="grid grid-cols-2 gap-3 sm:grid-cols-5">
+              <label class="field">Calories<input type="number" formControlName="calories" /></label
+              ><label class="field">Protein<input type="number" formControlName="proteinG" /></label
+              ><label class="field"
+                >Carbs<input type="number" formControlName="carbohydratesG" /></label
+              ><label class="field">Fat<input type="number" formControlName="fatG" /></label
+              ><label class="field">Fiber<input type="number" formControlName="fiberG" /></label>
+            </div>
+          </div>
+        </div>
+        <div class="sm:col-span-2 flex justify-end gap-3">
+          <button class="secondary-button" type="button" (click)="preview.set(null)">
+            Choose another</button
+          ><button class="primary-button" type="submit" [disabled]="saving()">
+            @if (saving()) {
+              <app-spinner />
+            } @else {
+              Save to today <span>↗</span>
+            }
+          </button>
+        </div>
+      </form>
     }
   </div>
 </section>

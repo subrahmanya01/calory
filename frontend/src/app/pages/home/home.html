@@ -5,34 +5,337 @@
   } @else if (user(); as current) {
     <main>
       <section class="home-intro">
-        <div><p class="eyebrow">Today</p><h1>{{ greeting }}, <em>{{ current.firstName }}</em>.</h1><p class="lede">Your nutrition at a glance. Start with a meal, then use the trend below to see the pattern.</p></div>
-        <div class="primary-actions"><button class="primary-action" type="button" (click)="openNewFood()"><span class="action-icon">+</span><span><strong>Log food</strong><small>Add a meal manually</small></span></button><button class="secondary-action" type="button" (click)="showImageReview.set(true)"><span class="action-icon">⌁</span><span><strong>Analyze photo</strong><small>Estimate from an image</small></span></button><button class="secondary-action" type="button" (click)="showPdfImport.set(true)"><span class="action-icon">↑</span><span><strong>Import PDF</strong><small>Bring in a food diary</small></span></button></div>
+        <div>
+          <p class="eyebrow">Today</p>
+          <h1>
+            {{ greeting }}, <em>{{ current.firstName }}</em
+            >.
+          </h1>
+          <p class="lede">
+            Your nutrition at a glance. Start with a meal, then use the trend below to see the
+            pattern.
+          </p>
+        </div>
+        <div class="primary-actions">
+          <button class="primary-action" type="button" (click)="openNewFood()">
+            <span class="action-icon">+</span
+            ><span><strong>Log food</strong><small>Add a meal manually</small></span></button
+          ><button class="secondary-action" type="button" (click)="showImageReview.set(true)">
+            <span class="action-icon">⌁</span
+            ><span
+              ><strong>Analyze photo</strong><small>Estimate from an image</small></span
+            ></button
+          ><button class="secondary-action" type="button" (click)="showPdfImport.set(true)">
+            <span class="action-icon">↑</span
+            ><span><strong>Import PDF</strong><small>Bring in a food diary</small></span>
+          </button>
+        </div>
       </section>
 
       <section class="today-layout">
-        <article class="today-card"><div class="section-heading"><div><p class="eyebrow">Today's calories</p><h2>{{ todayCalories | number:'1.0-0' }} <small>kcal</small></h2></div><span class="progress-label">{{ calorieProgress }}% of target</span></div><div class="progress-track"><span [style.width.%]="calorieProgress"></span></div><p class="supporting-text">{{ activeGoal ? (activeGoal.dailyCalorieTarget - todayCalories | number:'1.0-0') + ' kcal remaining from your ' + (activeGoal.dailyCalorieTarget | number:'1.0-0') + ' kcal target.' : 'Set a daily goal to track your progress.' }}</p></article>
-        <article class="goal-card"><div class="section-heading"><div><p class="eyebrow">Current goal</p><h2>{{ activeGoal ? 'On track' : 'Not set' }}</h2></div><button class="text-button" type="button" (click)="activeGoal ? editGoal() : openNewGoal()">{{ activeGoal ? 'Edit goal' : 'Set goal' }} <span>↗</span></button></div>@if (activeGoal; as goal) { <div class="goal-metrics"><div><strong>{{ goal.dailyCalorieTarget | number:'1.0-0' }}</strong><span>kcal / day</span></div><div><strong>{{ goal.proteinTarget | number:'1.0-0' }}g</strong><span>protein</span></div><div><strong>{{ goal.carbTarget | number:'1.0-0' }}g</strong><span>carbs</span></div></div> } @else { <p class="supporting-text">Choose a calorie and macro target to make the dashboard more useful.</p> }</article>
+        <article class="today-card">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Today's calories</p>
+              <h2>{{ todayCalories | number: '1.0-0' }} <small>kcal</small></h2>
+            </div>
+            <span class="progress-label">{{ calorieProgress }}% of target</span>
+          </div>
+          <div class="progress-track"><span [style.width.%]="calorieProgress"></span></div>
+          <p class="supporting-text">
+            {{
+              activeGoal
+                ? (activeGoal.dailyCalorieTarget - todayCalories | number: '1.0-0') +
+                  ' kcal remaining from your ' +
+                  (activeGoal.dailyCalorieTarget | number: '1.0-0') +
+                  ' kcal target.'
+                : 'Set a daily goal to track your progress.'
+            }}
+          </p>
+        </article>
+        <article class="goal-card">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Current goal</p>
+              <h2>{{ activeGoal ? 'On track' : 'Not set' }}</h2>
+            </div>
+            <button
+              class="text-button"
+              type="button"
+              (click)="activeGoal ? editGoal() : openNewGoal()"
+            >
+              {{ activeGoal ? 'Edit goal' : 'Set goal' }} <span>↗</span>
+            </button>
+          </div>
+          @if (activeGoal; as goal) {
+            <div class="goal-metrics">
+              <div>
+                <strong>{{ goal.dailyCalorieTarget | number: '1.0-0' }}</strong
+                ><span>kcal / day</span>
+              </div>
+              <div>
+                <strong>{{ goal.proteinTarget | number: '1.0-0' }}g</strong><span>protein</span>
+              </div>
+              <div>
+                <strong>{{ goal.carbTarget | number: '1.0-0' }}g</strong><span>carbs</span>
+              </div>
+            </div>
+          } @else {
+            <p class="supporting-text">
+              Choose a calorie and macro target to make the dashboard more useful.
+            </p>
+          }
+        </article>
       </section>
 
-      <section class="analytics-section"><div class="section-title"><div><p class="eyebrow">Seven-day view</p><h2>Nutrition trends</h2><p class="analytics-note">Daily totals across every nutrient tracked by Calory.</p></div><a routerLink="/query">View all entries <span>↗</span></a></div>
+      <section class="analytics-section">
+        <div class="section-title">
+          <div>
+            <p class="eyebrow">Seven-day view</p>
+            <h2>Nutrition trends</h2>
+            <p class="analytics-note">Daily totals across every nutrient tracked by Calory.</p>
+          </div>
+          <a routerLink="/query">View all entries <span>↗</span></a>
+        </div>
         @if (trends().length) {
-          <div class="primary-chart-grid"><article class="chart-card calorie-chart"><div class="chart-heading"><div><h3>Calories</h3><p>Energy consumed each day</p></div><span class="chart-stat">{{ averageCalories | number:'1.0-0' }} <small>avg kcal</small></span></div><div class="bar-chart" aria-label="Bar chart showing daily calorie consumption">@for (point of trends(); track point.date) { <div class="bar-item" [title]="point.date + ': ' + (point.calories | number:'1.0-0') + ' kcal'"><div class="bar-value">{{ point.calories | number:'1.0-0' }}</div><div class="bar" [style.height.%]="(point.calories / trendPeak) * 100"></div><small>{{ point.date.slice(5) }}</small></div> }</div></article><article class="chart-card calorie-chart"><div class="chart-heading"><div><h3>Calorie line</h3><p>Daily rhythm over time</p></div>@if (highestCalorieDay; as highest) { <span class="chart-stat">{{ highest.calories | number:'1.0-0' }} <small>peak kcal</small></span> }</div><div class="line-chart"><div class="line-grid"><span></span><span></span><span></span><span></span></div><svg viewBox="0 0 100 100" preserveAspectRatio="none" role="img" aria-label="Calorie trend line"><polyline [attr.points]="calorieLinePoints" fill="none" stroke="currentColor" stroke-width="2.5" vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round"></polyline></svg><div class="line-labels">@for (point of trends(); track point.date) { <small>{{ point.date.slice(5) }}</small> }</div></div></article></div>
-          <h3 class="metric-group-title">Macronutrients</h3><div class="metric-grid">@for (metric of macroMetrics; track metric.key) { <article class="metric-card"><div class="metric-card-heading"><strong>{{ metric.label }}</strong><span>{{ metric.unit }}</span></div><div class="metric-chart"><svg viewBox="0 0 100 100" preserveAspectRatio="none"><polyline [attr.points]="metricLinePoints(metric.key)" fill="none" [attr.stroke]="metric.color" stroke-width="2.5" vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round"></polyline></svg><div class="metric-bars">@for (point of trends(); track point.date) { <span [style.height.%]="(metricValue(point, metric.key) / metricPeak(metric.key)) * 100" [style.background]="metric.color"></span> }</div></div><small class="metric-total">{{ metricValue(trends()[trends().length - 1], metric.key) | number:'1.0-0' }} {{ metric.unit }} latest day</small></article> }</div>
-          <h3 class="metric-group-title">Micronutrients and vitamins</h3><div class="metric-grid">@for (metric of microMetrics; track metric.key) { <article class="metric-card"><div class="metric-card-heading"><strong>{{ metric.label }}</strong><span>{{ metric.unit }}</span></div><div class="metric-chart"><svg viewBox="0 0 100 100" preserveAspectRatio="none"><polyline [attr.points]="metricLinePoints(metric.key)" fill="none" [attr.stroke]="metric.color" stroke-width="2.5" vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round"></polyline></svg><div class="metric-bars">@for (point of trends(); track point.date) { <span [style.height.%]="(metricValue(point, metric.key) / metricPeak(metric.key)) * 100" [style.background]="metric.color"></span> }</div></div><small class="metric-total">{{ metricValue(trends()[trends().length - 1], metric.key) | number:'1.0-0' }} {{ metric.unit }} latest day</small></article> }</div>
-        } @else { <p class="empty-copy">Log meals to see nutrient trends.</p> }
+          <div class="primary-chart-grid">
+            <article class="chart-card calorie-chart">
+              <div class="chart-heading">
+                <div>
+                  <h3>Calories</h3>
+                  <p>Energy consumed each day</p>
+                </div>
+                <span class="chart-stat"
+                  >{{ averageCalories | number: '1.0-0' }} <small>avg kcal</small></span
+                >
+              </div>
+              <div class="bar-chart" aria-label="Bar chart showing daily calorie consumption">
+                @for (point of trends(); track point.date) {
+                  <div
+                    class="bar-item"
+                    [title]="point.date + ': ' + (point.calories | number: '1.0-0') + ' kcal'"
+                  >
+                    <div class="bar-value">{{ point.calories | number: '1.0-0' }}</div>
+                    <div class="bar" [style.height.%]="(point.calories / trendPeak) * 100"></div>
+                    <small>{{ point.date.slice(5) }}</small>
+                  </div>
+                }
+              </div>
+            </article>
+            <article class="chart-card calorie-chart">
+              <div class="chart-heading">
+                <div>
+                  <h3>Calorie line</h3>
+                  <p>Daily rhythm over time</p>
+                </div>
+                @if (highestCalorieDay; as highest) {
+                  <span class="chart-stat"
+                    >{{ highest.calories | number: '1.0-0' }} <small>peak kcal</small></span
+                  >
+                }
+              </div>
+              <div class="line-chart">
+                <div class="line-grid"><span></span><span></span><span></span><span></span></div>
+                <svg
+                  viewBox="0 0 100 100"
+                  preserveAspectRatio="none"
+                  role="img"
+                  aria-label="Calorie trend line"
+                >
+                  <polyline
+                    [attr.points]="calorieLinePoints"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                    vector-effect="non-scaling-stroke"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  ></polyline>
+                </svg>
+                <div class="line-labels">
+                  @for (point of trends(); track point.date) {
+                    <small>{{ point.date.slice(5) }}</small>
+                  }
+                </div>
+              </div>
+            </article>
+          </div>
+          <h3 class="metric-group-title">Macronutrients</h3>
+          <div class="metric-grid">
+            @for (metric of macroMetrics; track metric.key) {
+              <article class="metric-card">
+                <div class="metric-card-heading">
+                  <strong>{{ metric.label }}</strong
+                  ><span>{{ metric.unit }}</span>
+                </div>
+                <div class="metric-chart">
+                  <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                    <polyline
+                      [attr.points]="metricLinePoints(metric.key)"
+                      fill="none"
+                      [attr.stroke]="metric.color"
+                      stroke-width="2.5"
+                      vector-effect="non-scaling-stroke"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    ></polyline>
+                  </svg>
+                  <div class="metric-bars">
+                    @for (point of trends(); track point.date) {
+                      <span
+                        [style.height.%]="
+                          (metricValue(point, metric.key) / metricPeak(metric.key)) * 100
+                        "
+                        [style.background]="metric.color"
+                      ></span>
+                    }
+                  </div>
+                </div>
+                <small class="metric-total"
+                  >{{ metricValue(trends()[trends().length - 1], metric.key) | number: '1.0-0' }}
+                  {{ metric.unit }} latest day</small
+                >
+              </article>
+            }
+          </div>
+          <h3 class="metric-group-title">Micronutrients and vitamins</h3>
+          <div class="metric-grid">
+            @for (metric of microMetrics; track metric.key) {
+              <article class="metric-card">
+                <div class="metric-card-heading">
+                  <strong>{{ metric.label }}</strong
+                  ><span>{{ metric.unit }}</span>
+                </div>
+                <div class="metric-chart">
+                  <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                    <polyline
+                      [attr.points]="metricLinePoints(metric.key)"
+                      fill="none"
+                      [attr.stroke]="metric.color"
+                      stroke-width="2.5"
+                      vector-effect="non-scaling-stroke"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    ></polyline>
+                  </svg>
+                  <div class="metric-bars">
+                    @for (point of trends(); track point.date) {
+                      <span
+                        [style.height.%]="
+                          (metricValue(point, metric.key) / metricPeak(metric.key)) * 100
+                        "
+                        [style.background]="metric.color"
+                      ></span>
+                    }
+                  </div>
+                </div>
+                <small class="metric-total"
+                  >{{ metricValue(trends()[trends().length - 1], metric.key) | number: '1.0-0' }}
+                  {{ metric.unit }} latest day</small
+                >
+              </article>
+            }
+          </div>
+        } @else {
+          <p class="empty-copy">Log meals to see nutrient trends.</p>
+        }
       </section>
 
-      <section class="lower-grid"><article class="entries-card"><div class="section-heading"><div><p class="eyebrow">Latest records</p><h2>Recent food</h2></div><a class="text-button" routerLink="/query">Open journal <span>↗</span></a></div><div class="entry-list">@for (entry of entries().slice(0, 5); track entry.id) { <div class="entry-row"><div class="entry-time">{{ entry.consumedAt | date:'shortTime' }}</div><div><strong>{{ entry.foodName }}</strong><span>{{ entry.mealType }} · {{ entry.quantity }} {{ entry.unit }}</span></div><b>{{ entry.nutrition.calories | number:'1.0-0' }} kcal</b><div class="entry-actions"><button type="button" (click)="editEntry(entry)">Edit</button><button type="button" class="delete-link" (click)="deleteEntry(entry)" aria-label="Delete entry">×</button></div></div> } @empty { <p class="empty-copy">No food logged yet today.</p> }</div></article><article class="quick-card"><p class="eyebrow">Need a closer look?</p><h2>Search your food history.</h2><p>Filter entries by date, meal type, or calorie range.</p><a class="primary-action compact-action" routerLink="/query"><span class="action-icon">⌕</span><span><strong>Open food journal</strong><small>Search and manage records</small></span></a></article></section>
-      @if (message()) { <p class="inline-message mt-4">{{ message() }}</p> }
+      <section class="lower-grid">
+        <article class="entries-card">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Latest records</p>
+              <h2>Recent food</h2>
+            </div>
+            <a class="text-button" routerLink="/query">Open journal <span>↗</span></a>
+          </div>
+          <div class="entry-list">
+            @for (entry of entries().slice(0, 5); track entry.id) {
+              <div class="entry-row">
+                <div class="entry-time">{{ entry.consumedAt | date: 'shortTime' }}</div>
+                <div>
+                  <strong>{{ entry.foodName }}</strong
+                  ><span>{{ entry.mealType }} · {{ entry.quantity }} {{ entry.unit }}</span>
+                </div>
+                <b>{{ entry.nutrition.calories | number: '1.0-0' }} kcal</b>
+                <div class="entry-actions">
+                  <button type="button" (click)="editEntry(entry)">Edit</button
+                  ><button
+                    type="button"
+                    class="delete-link"
+                    (click)="deleteEntry(entry)"
+                    aria-label="Delete entry"
+                  >
+                    ×
+                  </button>
+                </div>
+              </div>
+            } @empty {
+              <p class="empty-copy">No food logged yet today.</p>
+            }
+          </div>
+        </article>
+        <article class="quick-card">
+          <p class="eyebrow">Need a closer look?</p>
+          <h2>Search your food history.</h2>
+          <p>Filter entries by date, meal type, or calorie range.</p>
+          <a class="primary-action compact-action" routerLink="/query"
+            ><span class="action-icon">⌕</span
+            ><span
+              ><strong>Open food journal</strong><small>Search and manage records</small></span
+            ></a
+          >
+        </article>
+      </section>
+      @if (message()) {
+        <p class="inline-message mt-4">{{ message() }}</p>
+      }
     </main>
   } @else {
-    <main class="landing"><p class="eyebrow">A calmer way to eat</p><h1>Make your daily<br /><em>energy visible.</em></h1><p class="lede">Simple tracking for the choices that make you feel like yourself.</p><a class="dark-button landing-button" routerLink="/register">Get started <span>↗</span></a></main>
+    <main class="landing">
+      <p class="eyebrow">A calmer way to eat</p>
+      <h1>Make your daily<br /><em>energy visible.</em></h1>
+      <p class="lede">Simple tracking for the choices that make you feel like yourself.</p>
+      <a class="dark-button landing-button" routerLink="/register">Get started <span>↗</span></a>
+    </main>
   }
   <app-footer />
-  <button class="chat-launcher" type="button" (click)="chatOpen.update((open) => !open); chatExpanded.set(false)" aria-label="Open Calory assistant">✦</button>
-  @if (chatOpen()) { <div class="chat-overlay" [class.chat-overlay-expanded]="chatExpanded()"><app-chat [expanded]="chatExpanded()" (expandedChange)="chatExpanded.set($event)" (closed)="closeChat()" /></div> }
-  @if (showGoalEditor()) { <app-goal-editor [goal]="editingGoal()" (saved)="onGoalSaved()" (closed)="showGoalEditor.set(false)" /> }
-  @if (showFoodEditor()) { <app-food-entry-editor [entry]="editingEntry()" (saved)="onFoodSaved()" (closed)="showFoodEditor.set(false)" /> }
-  @if (showImageReview()) { <app-image-food-review (saved)="onFoodSaved()" (closed)="showImageReview.set(false)" /> }
-  @if (showPdfImport()) { <app-food-pdf-import (imported)="onPdfImported($event)" (closed)="showPdfImport.set(false)" /> }
+  <button
+    class="chat-launcher"
+    type="button"
+    (click)="chatOpen.update((open) => !open); chatExpanded.set(false)"
+    aria-label="Open Calory assistant"
+  >
+    ✦
+  </button>
+  @if (chatOpen()) {
+    <div class="chat-overlay" [class.chat-overlay-expanded]="chatExpanded()">
+      <app-chat
+        [expanded]="chatExpanded()"
+        (expandedChange)="chatExpanded.set($event)"
+        (closed)="closeChat()"
+      />
+    </div>
+  }
+  @if (showGoalEditor()) {
+    <app-goal-editor
+      [goal]="editingGoal()"
+      (saved)="onGoalSaved()"
+      (closed)="showGoalEditor.set(false)"
+    />
+  }
+  @if (showFoodEditor()) {
+    <app-food-entry-editor
+      [entry]="editingEntry()"
+      (saved)="onFoodSaved()"
+      (closed)="showFoodEditor.set(false)"
+    />
+  }
+  @if (showImageReview()) {
+    <app-image-food-review (saved)="onFoodSaved()" (closed)="showImageReview.set(false)" />
+  }
+  @if (showPdfImport()) {
+    <app-food-pdf-import (imported)="onPdfImported($event)" (closed)="showPdfImport.set(false)" />
+  }
 </div>

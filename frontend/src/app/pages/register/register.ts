@@ -17,22 +17,34 @@ export class Register {
   readonly submitting = signal(false);
   readonly error = signal('');
   readonly form = this.formBuilder.nonNullable.group({
-    firstName: ['', Validators.required], lastName: ['', Validators.required],
-    email: ['', [Validators.required, Validators.email]], password: ['', [Validators.required, Validators.minLength(8)]],
+    firstName: ['', Validators.required],
+    lastName: ['', Validators.required],
+    email: ['', [Validators.required, Validators.email]],
+    password: ['', [Validators.required, Validators.minLength(8)]],
   });
 
-  constructor(private readonly api: UserApi, private readonly router: Router) { }
+  constructor(
+    private readonly api: UserApi,
+    private readonly router: Router,
+  ) {}
 
   submit(): void {
-    if (this.form.invalid) { this.form.markAllAsTouched(); return; }
-    this.submitting.set(true); this.error.set('');
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
+    this.submitting.set(true);
+    this.error.set('');
     this.api.register(this.form.getRawValue()).subscribe({
       next: () => this.router.navigateByUrl('/login'),
-      error: (response) => { 
-        this.error.set(response.status === 409 ? 'That email is already registered.' : 'We could not create your account. Please try again.'); 
-        this.submitting.set(false); 
+      error: (response) => {
+        this.error.set(
+          response.status === 409
+            ? 'That email is already registered.'
+            : 'We could not create your account. Please try again.',
+        );
+        this.submitting.set(false);
       },
     });
   }
-
 }

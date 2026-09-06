@@ -20,22 +20,41 @@ export class GoalHistory {
   readonly showEditor = signal(false);
   readonly editingGoal = signal<HealthGoal | null>(null);
 
-  constructor(private readonly api: HealthGoalApi) { this.load(); }
+  constructor(private readonly api: HealthGoalApi) {
+    this.load();
+  }
 
   isCurrent(goal: HealthGoal): boolean {
     const today = this.today();
     return goal.startDate <= today && (!goal.endDate || goal.endDate >= today);
   }
 
-  openNew(): void { this.editingGoal.set(null); this.showEditor.set(true); }
-  edit(goal: HealthGoal): void { this.editingGoal.set(goal); this.showEditor.set(true); }
-  saved(): void { this.showEditor.set(false); this.message.set('Goal saved.'); this.load(); }
+  openNew(): void {
+    this.editingGoal.set(null);
+    this.showEditor.set(true);
+  }
+  edit(goal: HealthGoal): void {
+    this.editingGoal.set(goal);
+    this.showEditor.set(true);
+  }
+  saved(): void {
+    this.showEditor.set(false);
+    this.message.set('Goal saved.');
+    this.load();
+  }
   private load(): void {
     this.api.getAll(1, 100).subscribe({
-      next: (result) => { this.goals.set(result.items); this.loading.set(false); },
-      error: () => { this.message.set('We could not load your goal history.'); this.loading.set(false); },
+      next: (result) => {
+        this.goals.set(result.items);
+        this.loading.set(false);
+      },
+      error: () => {
+        this.message.set('We could not load your goal history.');
+        this.loading.set(false);
+      },
     });
   }
-  private today(): string { return new Date().toISOString().slice(0, 10); }
-
+  private today(): string {
+    return new Date().toISOString().slice(0, 10);
+  }
 }

@@ -1,12 +1,69 @@
 <div class="goal-history-page">
-	<app-header />
-	<main>
-		<section class="history-heading"><div><p class="eyebrow">Your targets</p><h1>Goal history.</h1><p>Each goal owns one date range. Today’s dashboard uses the goal covering today’s date.</p></div><div class="heading-actions"><a routerLink="/home">Back to today</a><button type="button" (click)="openNew()">+ New goal</button></div></section>
-		@if (message()) { <p class="message">{{ message() }}</p> }
-		@if (loading()) { <div class="empty">Loading your goals...</div> } @else if (!goals().length) { <div class="empty"><strong>No goals yet.</strong><span>Set your first target to give your daily view some shape.</span><button type="button" (click)="openNew()">Set a goal</button></div> } @else {
-			<section class="goal-list">@for (goal of goals(); track goal.id) { <article class="goal-row" [class.current]="isCurrent(goal)"><div class="goal-status">@if (isCurrent(goal)) { <span class="current-dot"></span> Current } @else { <span>Past / upcoming</span> }</div><div class="goal-dates"><strong>{{ goal.startDate | date:'MMM d, y' }}</strong><span>to</span><strong>{{ goal.endDate ? (goal.endDate | date:'MMM d, y') : 'No end date' }}</strong></div><div class="goal-targets"><div><strong>{{ goal.dailyCalorieTarget | number:'1.0-0' }}</strong><span>kcal</span></div><div><strong>{{ goal.proteinTarget | number:'1.0-0' }}g</strong><span>protein</span></div><div><strong>{{ goal.carbTarget | number:'1.0-0' }}g</strong><span>carbs</span></div><div><strong>{{ goal.fatTarget | number:'1.0-0' }}g</strong><span>fat</span></div></div><button type="button" class="edit-button" (click)="edit(goal)">Edit</button></article> }</section>
-		}
-	</main>
-	<app-footer />
-	@if (showEditor()) { <app-goal-editor [goal]="editingGoal()" (saved)="saved()" (closed)="showEditor.set(false)" /> }
+  <app-header />
+  <main>
+    <section class="history-heading">
+      <div>
+        <p class="eyebrow">Your targets</p>
+        <h1>Goal history.</h1>
+        <p>Each goal owns one date range. Today’s dashboard uses the goal covering today’s date.</p>
+      </div>
+      <div class="heading-actions">
+        <a routerLink="/home">Back to today</a
+        ><button type="button" (click)="openNew()">+ New goal</button>
+      </div>
+    </section>
+    @if (message()) {
+      <p class="message">{{ message() }}</p>
+    }
+    @if (loading()) {
+      <div class="empty">Loading your goals...</div>
+    } @else if (!goals().length) {
+      <div class="empty">
+        <strong>No goals yet.</strong
+        ><span>Set your first target to give your daily view some shape.</span
+        ><button type="button" (click)="openNew()">Set a goal</button>
+      </div>
+    } @else {
+      <section class="goal-list">
+        @for (goal of goals(); track goal.id) {
+          <article class="goal-row" [class.current]="isCurrent(goal)">
+            <div class="goal-status">
+              @if (isCurrent(goal)) {
+                <span class="current-dot"></span> Current
+              } @else {
+                <span>Past / upcoming</span>
+              }
+            </div>
+            <div class="goal-dates">
+              <strong>{{ goal.startDate | date: 'MMM d, y' }}</strong
+              ><span>to</span
+              ><strong>{{
+                goal.endDate ? (goal.endDate | date: 'MMM d, y') : 'No end date'
+              }}</strong>
+            </div>
+            <div class="goal-targets">
+              <div>
+                <strong>{{ goal.dailyCalorieTarget | number: '1.0-0' }}</strong
+                ><span>kcal</span>
+              </div>
+              <div>
+                <strong>{{ goal.proteinTarget | number: '1.0-0' }}g</strong><span>protein</span>
+              </div>
+              <div>
+                <strong>{{ goal.carbTarget | number: '1.0-0' }}g</strong><span>carbs</span>
+              </div>
+              <div>
+                <strong>{{ goal.fatTarget | number: '1.0-0' }}g</strong><span>fat</span>
+              </div>
+            </div>
+            <button type="button" class="edit-button" (click)="edit(goal)">Edit</button>
+          </article>
+        }
+      </section>
+    }
+  </main>
+  <app-footer />
+  @if (showEditor()) {
+    <app-goal-editor [goal]="editingGoal()" (saved)="saved()" (closed)="showEditor.set(false)" />
+  }
 </div>
