@@ -19,10 +19,7 @@ public sealed class CaloryAgentRuntime : IAsyncDisposable
 
     public AIAgent Agent { get; }
 
-    public static async Task<CaloryAgentRuntime> CreateAsync(
-        AzureOpenAIOptions openAiOptions,
-        McpOptions mcpOptions,
-        CancellationToken cancellationToken = default)
+    public static async Task<CaloryAgentRuntime> CreateAsync(AzureOpenAIOptions openAiOptions, McpOptions mcpOptions, string accessToken, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(openAiOptions);
         ArgumentNullException.ThrowIfNull(mcpOptions);
@@ -33,28 +30,31 @@ public sealed class CaloryAgentRuntime : IAsyncDisposable
             throw new InvalidOperationException("AzureOpenAI:DeploymentName is not configured.");
         if (string.IsNullOrWhiteSpace(mcpOptions.Endpoint))
             throw new InvalidOperationException("Mcp:Endpoint is not configured.");
+        if (string.IsNullOrWhiteSpace(accessToken))
+            throw new UnauthorizedAccessException("An authenticated MCP access token is required.");
 
         var projectEndpoint = openAiOptions.Endpoint.TrimEnd('/');
         projectEndpoint = projectEndpoint
             .Replace("/openai/v1/responses", string.Empty, StringComparison.OrdinalIgnoreCase)
             .Replace("/openai/v1", string.Empty, StringComparison.OrdinalIgnoreCase);
 
-        var openAiClient = new OpenAIClient(
-            new ApiKeyCredential(openAiOptions.ApiKey ?? string.Empty),
-            new OpenAIClientOptions
-            {
-                Endpoint = new Uri($"{projectEndpoint}/openai/v1/")
+        var openAiClient = new OpenAIClient( new ApiKeyCredential(openAiOptions.ApiKey ?? string.Empty), 
+            new OpenAIClientOptions 
+            { 
+                Endpoint = new Uri($"{projectEndpoint}/openai/v1/") 
             });
 
-        IChatClient chatClient = openAiClient
-            .GetChatClient(openAiOptions.DeploymentName)
-            .AsIChatClient();
+        IChatClient chatClient = openAiClient.GetChatClient(openAiOptions.DeploymentName) .AsIChatClient();
 
         var mcpTransport = new HttpClientTransport(
             new HttpClientTransportOptions
             {
                 Endpoint = new Uri(mcpOptions.Endpoint),
-                TransportMode = HttpTransportMode.StreamableHttp
+                TransportMode = HttpTransportMode.StreamableHttp,
+                AdditionalHeaders = new Dictionary<string, string>
+                {
+                    ["Authorization"] = $"Bearer {accessToken}"
+                }
             });
 
         var mcpClient = await McpClient.CreateAsync(mcpTransport, cancellationToken: cancellationToken);
