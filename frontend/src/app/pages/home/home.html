@@ -27,6 +27,8 @@
     <main class="landing"><p class="eyebrow">A calmer way to eat</p><h1>Make your daily<br /><em>energy visible.</em></h1><p class="lede">Simple tracking for the choices that make you feel like yourself.</p><a class="dark-button landing-button" routerLink="/register">Get started <span>↗</span></a></main>
   }
   <app-footer />
+  <button class="chat-launcher" type="button" (click)="chatOpen.update((open) => !open)" aria-label="Open Calory assistant">✦</button>
+  @if (chatOpen()) { <div class="chat-overlay"><app-chat /></div> }
   @if (showGoalEditor()) { <app-goal-editor [goal]="editingGoal()" (saved)="onGoalSaved()" (closed)="showGoalEditor.set(false)" /> }
   @if (showFoodEditor()) { <app-food-entry-editor [entry]="editingEntry()" (saved)="onFoodSaved()" (closed)="showFoodEditor.set(false)" /> }
   @if (showImageReview()) { <app-image-food-review (saved)="onFoodSaved()" (closed)="showImageReview.set(false)" /> }

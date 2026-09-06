@@ -1,0 +1,10 @@
+<section class="chat-panel" aria-label="Calory assistant">
+	<header class="chat-heading"><div><p class="eyebrow">Calory assistant</p><h2>Make sense of your rhythm.</h2></div><span class="online-dot">Live</span></header>
+	<div class="chat-messages" aria-live="polite">
+		@if (!messages().length) { <div class="chat-welcome"><span class="chat-spark">✦</span><p>Ask me about your meals, goals, or the patterns in your week.</p><div class="prompt-list">@for (prompt of prompts; track prompt) { <button type="button" (click)="send(prompt)">{{ prompt }} <span>↗</span></button> }</div></div> }
+		@for (message of messages(); track $index) { <div class="message" [class.user-message]="message.role === 'user'"><span class="message-label">{{ message.role === 'user' ? 'You' : 'Calory' }}</span><p>{{ message.text || 'Thinking...' }}</p></div> }
+		@if (sending()) { <app-spinner /> }
+	</div>
+	@if (error()) { <p class="chat-error">{{ error() }}</p> }
+	<form class="chat-composer" (ngSubmit)="send()"><input name="message" [(ngModel)]="draftValue" placeholder="Ask about your nutrition..." autocomplete="off" /><button type="submit" [disabled]="sending()" aria-label="Send message">↗</button></form>
+</section>

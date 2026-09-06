@@ -16,10 +16,11 @@ import { DailyNutrition, TrendPoint } from '../../interfaces/report';
 import { HealthGoalApi } from '../../services/health-goal-api';
 import { FoodEntryApi } from '../../services/food-entry-api';
 import { ReportApi } from '../../services/report-api';
+import { Chat } from '../../components/chat/chat';
 
 @Component({
   selector: 'app-home',
-  imports: [CommonModule, ReactiveFormsModule, RouterLink, Header, Footer, Spinner, GoalEditor, FoodEntryEditor, ImageFoodReview],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink, Header, Footer, Spinner, GoalEditor, FoodEntryEditor, ImageFoodReview, Chat],
   templateUrl: './home.html',
   styleUrl: './home.css',
 })
@@ -39,6 +40,7 @@ export class Home {
   readonly showImageReview = signal(false);
   readonly editingGoal = signal<HealthGoal | null>(null);
   readonly editingEntry = signal<FoodEntry | null>(null);
+  readonly chatOpen = signal(false);
 
   readonly form = this.formBuilder.nonNullable.group({
     firstName: ['', Validators.required], lastName: ['', Validators.required],

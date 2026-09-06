@@ -41,6 +41,7 @@ builder.Services.Configure<JsonOptions>(options =>
 });
 
 builder.Services.AddMcpServer().WithHttpTransport().WithToolsFromAssembly();
+builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddPersistence(builder.Configuration);
 builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection(JwtOptions.SectionName));
@@ -78,7 +79,7 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-app.MapMcp("/mcp");
+app.MapMcp("/mcp").RequireAuthorization();
 
 using (var scope = app.Services.CreateScope())
 {
